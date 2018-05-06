@@ -1,0 +1,6 @@
+[package]
+name = "battle-shapes"
+version = "0.1.0"
+authors = ["Kyle Lin <kylejlin.us@gmail.com>"]
+
+[dependencies]
