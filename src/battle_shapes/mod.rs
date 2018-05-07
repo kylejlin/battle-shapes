@@ -18,9 +18,9 @@ use piston_window::{
 use self::troops::{
     Troop,
     Team,
-    TroopType
+    TroopType,
+    render_properties
 };
-
 const FIELD_COLOR: [f32; 4] = [0.0, 0.5, 0.0, 1.0];
 
 pub struct App {
@@ -73,10 +73,19 @@ impl App {
     }
 
     fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
-        window.draw_2d(event, |c, g| {
-            rectangle([1.0, 0.0, 0.0, 1.0], // red
-                      [troop.x, troop.y, 100.0, 100.0], // rectangle
-                      c.transform, g);
-        });
+        match troop.troop_type {
+            TroopType::Swordsman => {
+                use self::troops::render_properties::swordsman_properties::{
+                    COLOR,
+                    SIZE
+                };
+
+                window.draw_2d(event, |c, g| {
+                    rectangle(COLOR,
+                              [troop.x, troop.y, SIZE, SIZE], // rectangle
+                              c.transform, g);
+                });
+            }
+        }
     }
 }
