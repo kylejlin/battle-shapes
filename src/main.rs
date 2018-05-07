@@ -23,9 +23,7 @@ fn main() {
         .build()
         .unwrap();
 
-    let mut app = App {
-
-    };
+    let mut app = App::new();
 
     while let Some(e) = window.next() {
         if let Some(render_args) = e.render_args() {
