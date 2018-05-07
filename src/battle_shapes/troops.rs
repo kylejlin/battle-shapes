@@ -27,57 +27,6 @@ impl Troop {
             y: 360.0
         }
     }
-
-    fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
-        use self::troop_properties::{
-            swordsman_properties
-        };
-
-        match troop_type {
-            &TroopType::Swordsman => swordsman_properties::SIZE
-        }
-    }
-
-    pub fn update(&mut self, dt: f64) -> Victor {
-        match self.troop_type {
-            TroopType::Swordsman => {
-                let step = match self.team {
-                    Team::Blue => 20.0,
-                    Team::Red => -20.0
-                };
-
-                self.x += dt * step;
-            }
-        }
-
-        match self.team {
-            Team::Blue => {
-                if self.x > 960.0 {
-                    return Victor::Blue;
-                }
-            },
-            Team::Red => {
-                if self.x < 0.0 {
-                    return Victor::Red;
-                }
-            }
-        }
-
-        Victor::None
-    }
-
-    pub fn get_size(&self) -> f64 {
-        Troop::get_size_of_troop_type(&self.troop_type)
-    }
-
-    pub fn is_touching(&self, other: &Troop) -> bool {
-        let my_size = self.get_size();
-        let other_size = self.get_size();
-        let gap = (my_size + other_size) / 2.0;
-
-        (self.x - other.x).abs() < gap
-            && (self.y - other.y).abs() < gap
-    }
 }
 
 impl Team {
@@ -97,6 +46,18 @@ pub fn get_team_color(team: &Team) -> [f32; 4] {
 }
 
 pub mod troop_properties {
+    use super::TroopType;
+
+    pub fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
+        use self::{
+            swordsman_properties
+        };
+
+        match troop_type {
+            &TroopType::Swordsman => swordsman_properties::SIZE
+        }
+    }
+
     pub mod swordsman_properties {
         pub const SIZE: f64 = 40.0;
     }

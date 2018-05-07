@@ -22,7 +22,8 @@ use self::troops::{
     Troop,
     Team,
     TroopType,
-    get_team_color
+    get_team_color,
+    troop_properties
 };
 use self::colors::{
     GRASS,
@@ -114,7 +115,7 @@ impl App {
     }
 
     fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
-        let troop_size = troop.get_size();
+        let troop_size = troop_properties::get_size_of_troop_type(&troop.troop_type);
 
         match troop.troop_type {
             TroopType::Swordsman => {

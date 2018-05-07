@@ -1,7 +1,8 @@
 use super::troops::{
     Troop,
     Team,
-    TroopType
+    TroopType,
+    troop_properties
 };
 use super::victor::Victor;
 
@@ -44,6 +45,15 @@ impl BattleField {
         }
 
         Victor::None
+    }
+
+    pub fn are_troops_touching(a: &Troop, b: &Troop) -> bool {
+        let a_size = troop_properties::get_size_of_troop_type(&a.troop_type);
+        let b_size = troop_properties::get_size_of_troop_type(&b.troop_type);
+        let max_gap = (a_size + b_size) / 2.0;
+
+        (a.x - b.x).abs() < max_gap
+            && (a.y - b.y).abs() < max_gap
     }
 
     pub fn add_troop(&mut self, troop: Troop) {
