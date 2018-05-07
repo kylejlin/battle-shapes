@@ -40,7 +40,6 @@ pub fn get_team_color(team: &Team) -> [f32; 4] {
 
 pub mod render_properties {
     pub mod swordsman_properties {
-        pub const COLOR: [f32; 4] = [0.3, 0.3, 0.3, 1.0];
-        pub const SIZE: f64 = 20.0;
+        pub const SIZE: f64 = 40.0;
     }
 }

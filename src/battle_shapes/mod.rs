@@ -1,6 +1,7 @@
 extern crate piston_window;
 
 mod troops;
+mod colors;
 
 use piston_window::{
     PistonWindow,
@@ -22,7 +23,11 @@ use self::troops::{
     render_properties,
     get_team_color
 };
-const FIELD_COLOR: [f32; 4] = [0.0, 0.5, 0.0, 1.0];
+use self::colors::{
+    GRASS,
+    IRON,
+    WOOD
+};
 
 pub struct App {
     pub troops: Vec<Troop>,
@@ -38,7 +43,7 @@ impl App {
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
         window.draw_2d(event, |_c, g| {
-            clear(FIELD_COLOR, g);
+            clear(GRASS, g);
         });
 
         for troop in &self.troops {
@@ -76,17 +81,13 @@ impl App {
     fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
         match troop.troop_type {
             TroopType::Swordsman => {
-                use self::troops::render_properties::swordsman_properties::{
-                    COLOR,
-                    SIZE
-                };
+                use self::troops::render_properties::swordsman_properties::SIZE;
 
-                let ensign_color = get_team_color(&troop.team);
-                let ensign_size = SIZE * 0.5;
+                let team_color = get_team_color(&troop.team);
 
                 window.draw_2d(event, |c, g| {
                     rectangle(
-                        COLOR,
+                        team_color,
                         [
                             troop.x - (SIZE / 2.0),
                             troop.y - (SIZE / 2.0),
@@ -97,12 +98,34 @@ impl App {
                         g
                     );
                     rectangle(
-                        ensign_color,
+                        IRON,
                         [
-                            troop.x - (ensign_size / 2.0),
-                            troop.y - (ensign_size / 2.0),
-                            ensign_size,
-                            ensign_size
+                            troop.x - (SIZE * 0.05),
+                            troop.y - (SIZE * 0.35),
+                            SIZE * 0.1,
+                            SIZE * 0.7
+                        ],
+                        c.transform,
+                        g
+                    );
+                    rectangle(
+                        IRON,
+                        [
+                            troop.x - (SIZE * 0.15),
+                            troop.y + (SIZE * 0.1),
+                            SIZE * 0.3,
+                            SIZE * 0.1
+                        ],
+                        c.transform,
+                        g
+                    );
+                    rectangle(
+                        WOOD,
+                        [
+                            troop.x - (SIZE * 0.05),
+                            troop.y + (SIZE * 0.2),
+                            SIZE * 0.1,
+                            SIZE * 0.15
                         ],
                         c.transform,
                         g
