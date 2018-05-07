@@ -88,6 +88,13 @@ impl App {
     }
 
     pub fn handle_button_press(&mut self, args: &Button) {
+        match self.victor {
+            Victor::None => {},
+            _ => {
+                return;
+            }
+        }
+
         if let &Button::Keyboard(key) = args {
             match key {
                 Key::D1 => {
@@ -101,6 +108,17 @@ impl App {
                         }
                     );
                 },
+                Key::P => {
+                    self.troops.push(
+                        Troop {
+                            team: Team::Red,
+                            troop_type: TroopType::Swordsman,
+                            health: 100,
+                            x: self.cursor[0],
+                            y: self.cursor[1]
+                        }
+                    )
+                }
                 _ => {}
             }
         }
