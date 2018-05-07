@@ -10,10 +10,16 @@ use piston_window::{
     RenderArgs,
     UpdateArgs,
     Button,
+    Key,
 
-    clear
+    clear,
+    rectangle
 };
-use self::troops::Troop;
+use self::troops::{
+    Troop,
+    Team,
+    TroopType
+};
 
 const FIELD_COLOR: [f32; 4] = [0.0, 0.5, 0.0, 1.0];
 
@@ -31,6 +37,10 @@ impl App {
         window.draw_2d(event, |_c, g| {
             clear(FIELD_COLOR, g);
         });
+
+        for troop in &self.troops {
+            self.render_troop(troop, window, event);
+        }
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
@@ -38,6 +48,24 @@ impl App {
     }
 
     pub fn handle_button_press(&mut self, args: &Button) {
+        if let &Button::Keyboard(key) = args {
+            match key {
+                Key::D1 => {
+                    self.troops.push(Troop::new(
+                        Team::Blue,
+                        TroopType::Swordsman
+                    ));
+                },
+                _ => {}
+            }
+        }
+    }
 
+    fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
+        window.draw_2d(event, |c, g| {
+            rectangle([1.0, 0.0, 0.0, 1.0], // red
+                      [0.0, 0.0, 100.0, 100.0], // rectangle
+                      c.transform, g);
+        });
     }
 }
