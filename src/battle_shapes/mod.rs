@@ -52,7 +52,9 @@ impl App {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-
+        for troop in &mut self.troops {
+            troop.update(args.dt);
+        }
     }
 
     pub fn handle_button_press(&mut self, args: &Button) {

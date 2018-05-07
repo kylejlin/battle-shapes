@@ -27,7 +27,7 @@ impl Troop {
     }
 
     pub fn update(&mut self, dt: f64) {
-
+        self.x += dt * 20.0;
     }
 }
 
