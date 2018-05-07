@@ -1,3 +1,5 @@
+use super::victor::Victor;
+
 pub struct Troop {
     pub team: Team,
     pub troop_type: TroopType,
@@ -26,8 +28,14 @@ impl Troop {
         }
     }
 
-    pub fn update(&mut self, dt: f64) {
+    pub fn update(&mut self, dt: f64) -> Victor {
         self.x += dt * 20.0;
+
+        if (self.x > 960.0) {
+            return Victor::Blue;
+        }
+
+        Victor::None
     }
 }
 

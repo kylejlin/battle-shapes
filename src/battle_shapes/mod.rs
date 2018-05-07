@@ -73,7 +73,14 @@ impl App {
         match self.victor {
             Victor::None => {
                 for troop in &mut self.troops {
-                    troop.update(args.dt);
+                    let new_victor = troop.update(args.dt);
+                    match new_victor {
+                        Victor::None => {},
+                        _ => {
+                            self.victor = new_victor;
+                            break;
+                        }
+                    }
                 }
             },
             _ => {}
