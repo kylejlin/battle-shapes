@@ -19,7 +19,8 @@ use self::troops::{
     Troop,
     Team,
     TroopType,
-    render_properties
+    render_properties,
+    get_team_color
 };
 const FIELD_COLOR: [f32; 4] = [0.0, 0.5, 0.0, 1.0];
 
@@ -80,6 +81,9 @@ impl App {
                     SIZE
                 };
 
+                let ensign_color = get_team_color(&troop.team);
+                let ensign_size = SIZE * 0.5;
+
                 window.draw_2d(event, |c, g| {
                     rectangle(
                         COLOR,
@@ -88,6 +92,17 @@ impl App {
                             troop.y - (SIZE / 2.0),
                             SIZE,
                             SIZE
+                        ],
+                        c.transform,
+                        g
+                    );
+                    rectangle(
+                        ensign_color,
+                        [
+                            troop.x - (ensign_size / 2.0),
+                            troop.y - (ensign_size / 2.0),
+                            ensign_size,
+                            ensign_size
                         ],
                         c.transform,
                         g
