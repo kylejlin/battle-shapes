@@ -3,6 +3,7 @@ extern crate piston_window;
 mod troops;
 mod colors;
 mod victor;
+mod battle_field;
 
 use piston_window::{
     PistonWindow,
@@ -29,29 +30,28 @@ use self::colors::{
     WOOD
 };
 use self::victor::Victor;
+use self::battle_field::BattleField;
 
 pub struct App {
-    pub troops: Vec<Troop>,
-    pub cursor: [f64; 2],
-    pub victor: Victor
+    pub battle_field: BattleField,
+    pub cursor: [f64; 2]
 }
 
 impl App {
     pub fn new() -> App {
         App {
-            troops: Vec::new(),
-            cursor: [0.0, 0.0],
-            victor: Victor::None
+            battle_field: BattleField::new(),
+            cursor: [0.0, 0.0]
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
-        match self.victor {
+        match self.battle_field.victor {
             Victor::None => {
                 window.draw_2d(event, |_c, g| {
                     clear(GRASS, g);
                 });
 
-                for troop in &self.troops {
+                for troop in &self.battle_field.troops {
                     self.render_troop(troop, window, event);
                 }
             },
@@ -69,25 +69,11 @@ impl App {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-        match self.victor {
-            Victor::None => {
-                for troop in &mut self.troops {
-                    let new_victor = troop.update(args.dt);
-                    match new_victor {
-                        Victor::None => {},
-                        _ => {
-                            self.victor = new_victor;
-                            break;
-                        }
-                    }
-                }
-            },
-            _ => {}
-        }
+        self.battle_field.update(args.dt);
     }
 
     pub fn handle_button_press(&mut self, args: &Button) {
-        match self.victor {
+        match self.battle_field.victor {
             Victor::None => {},
             _ => {
                 return;
@@ -97,7 +83,7 @@ impl App {
         if let &Button::Keyboard(key) = args {
             match key {
                 Key::D1 => {
-                    self.troops.push(
+                    self.battle_field.add_troop(
                         Troop {
                             team: Team::Blue,
                             troop_type: TroopType::Swordsman,
@@ -105,10 +91,10 @@ impl App {
                             x: self.cursor[0],
                             y: self.cursor[1]
                         }
-                    );
+                    )
                 },
                 Key::P => {
-                    self.troops.push(
+                    self.battle_field.add_troop(
                         Troop {
                             team: Team::Red,
                             troop_type: TroopType::Swordsman,
