@@ -21,7 +21,6 @@ use self::troops::{
     Troop,
     Team,
     TroopType,
-    render_properties,
     get_team_color
 };
 use self::colors::{
@@ -129,20 +128,20 @@ impl App {
     }
 
     fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
+        let troop_size = troop.get_size();
+
         match troop.troop_type {
             TroopType::Swordsman => {
-                use self::troops::render_properties::swordsman_properties::SIZE;
-
                 let team_color = get_team_color(&troop.team);
 
                 window.draw_2d(event, |c, g| {
                     rectangle(
                         team_color,
                         [
-                            troop.x - (SIZE / 2.0),
-                            troop.y - (SIZE / 2.0),
-                            SIZE,
-                            SIZE
+                            troop.x - (troop_size / 2.0),
+                            troop.y - (troop_size / 2.0),
+                            troop_size,
+                            troop_size
                         ],
                         c.transform,
                         g
@@ -150,10 +149,10 @@ impl App {
                     rectangle(
                         IRON,
                         [
-                            troop.x - (SIZE * 0.05),
-                            troop.y - (SIZE * 0.35),
-                            SIZE * 0.1,
-                            SIZE * 0.7
+                            troop.x - (troop_size * 0.05),
+                            troop.y - (troop_size * 0.35),
+                            troop_size * 0.1,
+                            troop_size * 0.7
                         ],
                         c.transform,
                         g
@@ -161,10 +160,10 @@ impl App {
                     rectangle(
                         IRON,
                         [
-                            troop.x - (SIZE * 0.15),
-                            troop.y + (SIZE * 0.1),
-                            SIZE * 0.3,
-                            SIZE * 0.1
+                            troop.x - (troop_size * 0.15),
+                            troop.y + (troop_size * 0.1),
+                            troop_size * 0.3,
+                            troop_size * 0.1
                         ],
                         c.transform,
                         g
@@ -172,10 +171,10 @@ impl App {
                     rectangle(
                         WOOD,
                         [
-                            troop.x - (SIZE * 0.05),
-                            troop.y + (SIZE * 0.2),
-                            SIZE * 0.1,
-                            SIZE * 0.15
+                            troop.x - (troop_size * 0.05),
+                            troop.y + (troop_size * 0.2),
+                            troop_size * 0.1,
+                            troop_size * 0.15
                         ],
                         c.transform,
                         g

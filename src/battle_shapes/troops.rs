@@ -55,6 +55,20 @@ impl Troop {
 
         Victor::None
     }
+
+    pub fn get_size(&self) -> f64 {
+        Troop::get_size_of_troop_type(&self.troop_type)
+    }
+
+    fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
+        use self::troop_properties::{
+            swordsman_properties
+        };
+
+        match troop_type {
+            &TroopType::Swordsman => swordsman_properties::SIZE
+        }
+    }
 }
 
 impl Team {
@@ -73,7 +87,7 @@ pub fn get_team_color(team: &Team) -> [f32; 4] {
     }
 }
 
-pub mod render_properties {
+pub mod troop_properties {
     pub mod swordsman_properties {
         pub const SIZE: f64 = 40.0;
     }
