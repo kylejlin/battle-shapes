@@ -29,10 +29,28 @@ impl Troop {
     }
 
     pub fn update(&mut self, dt: f64) -> Victor {
-        self.x += dt * 20.0;
+        match self.troop_type {
+            TroopType::Swordsman => {
+                let step = match self.team {
+                    Team::Blue => 20.0,
+                    Team::Red => -20.0
+                };
 
-        if (self.x > 960.0) {
-            return Victor::Blue;
+                self.x += dt * step;
+            }
+        }
+
+        match self.team {
+            Team::Blue => {
+                if self.x > 960.0 {
+                    return Victor::Blue;
+                }
+            },
+            Team::Red => {
+                if self.x < 0.0 {
+                    return Victor::Red;
+                }
+            }
         }
 
         Victor::None
