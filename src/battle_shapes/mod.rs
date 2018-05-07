@@ -2,6 +2,7 @@ extern crate piston_window;
 
 mod troops;
 mod colors;
+mod victor;
 
 use piston_window::{
     PistonWindow,
@@ -28,32 +29,54 @@ use self::colors::{
     IRON,
     WOOD
 };
+use self::victor::Victor;
 
 pub struct App {
     pub troops: Vec<Troop>,
-    pub cursor: [f64; 2]
+    pub cursor: [f64; 2],
+    pub victor: Victor
 }
 
 impl App {
     pub fn new() -> App {
         App {
             troops: Vec::new(),
-            cursor: [0.0, 0.0]
+            cursor: [0.0, 0.0],
+            victor: Victor::None
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
-        window.draw_2d(event, |_c, g| {
-            clear(GRASS, g);
-        });
+        match self.victor {
+            Victor::None => {
+                window.draw_2d(event, |_c, g| {
+                    clear(GRASS, g);
+                });
 
-        for troop in &self.troops {
-            self.render_troop(troop, window, event);
+                for troop in &self.troops {
+                    self.render_troop(troop, window, event);
+                }
+            },
+            Victor::Blue => {
+                window.draw_2d(event, |_c, g| {
+                    clear(get_team_color(&Team::Blue), g);
+                });
+            },
+            Victor::Red => {
+                window.draw_2d(event, |_c, g| {
+                    clear(get_team_color(&Team::Red), g);
+                });
+            }
         }
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-        for troop in &mut self.troops {
-            troop.update(args.dt);
+        match self.victor {
+            Victor::None => {
+                for troop in &mut self.troops {
+                    troop.update(args.dt);
+                }
+            },
+            _ => {}
         }
     }
 
