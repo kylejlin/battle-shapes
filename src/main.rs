@@ -8,7 +8,9 @@ use piston_window::{
 
     RenderEvent,
     UpdateEvent,
-    PressEvent
+    PressEvent,
+
+    clear
 };
 use battle_shapes::App;
 
@@ -22,12 +24,12 @@ fn main() {
         .unwrap();
 
     let mut app = App {
-        //
+
     };
 
     while let Some(e) = window.next() {
         if let Some(render_args) = e.render_args() {
-            app.render(&render_args);
+            app.render(&mut window, &e);
         }
 
         if let Some(update_args) = e.update_args() {
