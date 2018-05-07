@@ -57,6 +57,15 @@ impl Troop {
     }
 }
 
+impl Team {
+    pub fn enemy(&self) -> Team {
+        match self {
+            &Team::Blue => Team::Red,
+            &Team::Red => Team::Blue
+        }
+    }
+}
+
 pub fn get_team_color(team: &Team) -> [f32; 4] {
     match team {
         &Team::Blue => [0.0, 0.0, 1.0, 1.0],
