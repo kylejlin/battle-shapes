@@ -82,7 +82,7 @@ impl App {
 
                 window.draw_2d(event, |c, g| {
                     rectangle(COLOR,
-                              [troop.x, troop.y, SIZE, SIZE], // rectangle
+                              [troop.x - (SIZE / 2.0), troop.y - (SIZE / 2.0), SIZE, SIZE], // rectangle
                               c.transform, g);
                 });
             }
