@@ -28,6 +28,16 @@ impl Troop {
         }
     }
 
+    fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
+        use self::troop_properties::{
+            swordsman_properties
+        };
+
+        match troop_type {
+            &TroopType::Swordsman => swordsman_properties::SIZE
+        }
+    }
+
     pub fn update(&mut self, dt: f64) -> Victor {
         match self.troop_type {
             TroopType::Swordsman => {
@@ -60,14 +70,13 @@ impl Troop {
         Troop::get_size_of_troop_type(&self.troop_type)
     }
 
-    fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
-        use self::troop_properties::{
-            swordsman_properties
-        };
+    pub fn is_touching(&self, other: &Troop) -> bool {
+        let my_size = self.get_size();
+        let other_size = self.get_size();
+        let gap = (my_size + other_size) / 2.0;
 
-        match troop_type {
-            &TroopType::Swordsman => swordsman_properties::SIZE
-        }
+        (self.x - other.x).abs() < gap
+            && (self.y - other.y).abs() < gap
     }
 }
 
