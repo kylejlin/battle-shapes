@@ -81,9 +81,17 @@ impl App {
                 };
 
                 window.draw_2d(event, |c, g| {
-                    rectangle(COLOR,
-                              [troop.x - (SIZE / 2.0), troop.y - (SIZE / 2.0), SIZE, SIZE], // rectangle
-                              c.transform, g);
+                    rectangle(
+                        COLOR,
+                        [
+                            troop.x - (SIZE / 2.0),
+                            troop.y - (SIZE / 2.0),
+                            SIZE,
+                            SIZE
+                        ],
+                        c.transform,
+                        g
+                    );
                 });
             }
         }
