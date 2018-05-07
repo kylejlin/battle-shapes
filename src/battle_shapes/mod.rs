@@ -24,13 +24,15 @@ use self::troops::{
 const FIELD_COLOR: [f32; 4] = [0.0, 0.5, 0.0, 1.0];
 
 pub struct App {
-    pub troops: Vec<Troop>
+    pub troops: Vec<Troop>,
+    pub cursor: [f64; 2]
 }
 
 impl App {
     pub fn new() -> App {
         App {
-            troops: Vec::new()
+            troops: Vec::new(),
+            cursor: [0.0, 0.0]
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
@@ -51,20 +53,29 @@ impl App {
         if let &Button::Keyboard(key) = args {
             match key {
                 Key::D1 => {
-                    self.troops.push(Troop::new(
-                        Team::Blue,
-                        TroopType::Swordsman
-                    ));
+                    self.troops.push(
+                        Troop {
+                            team: Team::Blue,
+                            troop_type: TroopType::Swordsman,
+                            health: 100,
+                            x: self.cursor[0],
+                            y: self.cursor[1]
+                        }
+                    );
                 },
                 _ => {}
             }
         }
     }
 
+    pub fn handle_mouse_cursor_move(&mut self, coordinates: [f64; 2]) {
+        self.cursor = coordinates;
+    }
+
     fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
         window.draw_2d(event, |c, g| {
             rectangle([1.0, 0.0, 0.0, 1.0], // red
-                      [0.0, 0.0, 100.0, 100.0], // rectangle
+                      [troop.x, troop.y, 100.0, 100.0], // rectangle
                       c.transform, g);
         });
     }

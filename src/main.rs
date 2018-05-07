@@ -9,6 +9,7 @@ use piston_window::{
     RenderEvent,
     UpdateEvent,
     PressEvent,
+    MouseCursorEvent,
 
     clear
 };
@@ -36,6 +37,10 @@ fn main() {
 
         if let Some(button) = e.press_args() {
             app.handle_button_press(&button);
+        }
+
+        if let Some(coordinates) = e.mouse_cursor_args() {
+            app.handle_mouse_cursor_move(coordinates);
         }
     }
 }
