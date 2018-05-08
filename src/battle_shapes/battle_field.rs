@@ -56,6 +56,12 @@ impl BattleField {
                 }
 
                 if let Some(engaged_troop) = engaged_troop {
+                    let step = if troop.y > engaged_troop.y {
+                        step.abs()
+                    } else {
+                        -step.abs()
+                    };
+
                     troop.y += dt * step;
                     result.changes.push(
                         TroopChange {
