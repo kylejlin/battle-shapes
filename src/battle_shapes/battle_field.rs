@@ -19,7 +19,7 @@ impl BattleField {
         }
     }
 
-    pub fn update_troop(troop: &mut Troop, dt: f64) -> Victor {
+    pub fn update_troop(original_troops: &Vec<Troop>, troop: &mut Troop, dt: f64) -> Victor {
         match troop.troop_type {
             TroopType::Swordsman => {
                 let step = match troop.team {
@@ -28,6 +28,23 @@ impl BattleField {
                 };
 
                 troop.x += dt * step;
+
+                let enemy_team = troop.team.enemy();
+                let mut engaged_troop: Option<&Troop> = None;
+
+                for other_troop in original_troops {
+                    if (
+                        enemy_team == other_troop.team
+                        && Self::are_troops_touching(troop, other_troop)
+                    ) {
+                        engaged_troop = Some(other_troop);
+                        break;
+                    }
+                }
+
+                if let Some(engaged_troop) = engaged_troop {
+                    troop.y += dt * step; // TODO
+                }
             }
         }
 
@@ -68,8 +85,10 @@ impl BattleField {
             }
         };
 
+        let original_troops = self.troops.clone();
+
         for troop in &mut self.troops {
-            let new_victor = Self::update_troop(troop, dt);
+            let new_victor = Self::update_troop(&original_troops, troop, dt);
 
             if let Victor::None = new_victor {
                 continue;

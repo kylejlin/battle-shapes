@@ -1,5 +1,6 @@
 use super::victor::Victor;
 
+#[derive(Clone)]
 pub struct Troop {
     pub team: Team,
     pub troop_type: TroopType,
@@ -8,11 +9,13 @@ pub struct Troop {
     pub y: f64
 }
 
+#[derive(Clone, PartialEq)]
 pub enum Team {
     Blue,
     Red
 }
 
+#[derive(Clone)]
 pub enum TroopType {
     Swordsman
 }
@@ -28,6 +31,22 @@ impl Troop {
         }
     }
 }
+
+/*impl std::clone::Clone for Troop {
+    pub fn clone(&self) -> Troop {
+        Troop {
+            team: self.team,
+            troop_type: self.troop_type,
+            health: self.health,
+            x: self.x,
+            y: self.y
+        }
+    }
+
+    pub fn clone_from(&mut self, source: &Troop) {
+
+    }
+}*/
 
 impl Team {
     pub fn enemy(&self) -> Team {
