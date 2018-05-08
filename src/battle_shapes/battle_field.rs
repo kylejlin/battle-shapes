@@ -56,7 +56,15 @@ impl BattleField {
                 }
 
                 if let Some(engaged_troop) = engaged_troop {
-                    troop.y += dt * step; // TODO
+                    troop.y += dt * step;
+                    result.changes.push(
+                        TroopChange {
+                            id: engaged_troop.id,
+                            x: dt * step * 3.0,
+                            y: 0.0,
+                            health: 0
+                        }
+                    );
                 }
             }
         }
