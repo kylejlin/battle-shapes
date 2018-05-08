@@ -62,7 +62,7 @@ impl BattleField {
                             id: engaged_troop.id,
                             x: dt * step * 3.0,
                             y: 0.0,
-                            health: dt * -20.0
+                            health: dt * -300.0
                         }
                     );
                 }
@@ -147,5 +147,7 @@ impl BattleField {
                 }
             }
         }
+
+        self.troops.retain(|ref t| t.health > 0.0);
     }
 }
