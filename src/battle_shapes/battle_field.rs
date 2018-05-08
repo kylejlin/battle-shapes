@@ -6,6 +6,10 @@ use super::troops::{
     troop_properties
 };
 use super::victor::Victor;
+use super::troop_update_result::{
+    TroopUpdateResult,
+    TroopChange
+};
 
 pub struct BattleField {
     pub troops: Vec<Troop>,
@@ -22,7 +26,13 @@ impl BattleField {
         }
     }
 
-    pub fn update_troop(original_troops: &Vec<Troop>, troop: &mut Troop, dt: f64) -> Victor {
+    pub fn apply_change(troop: &mut Troop, change: &TroopChange) {
+
+    }
+
+    pub fn update_troop(original_troops: &Vec<Troop>, troop: &mut Troop, dt: f64) -> TroopUpdateResult {
+        let mut result = TroopUpdateResult::zero_change(Victor::None);
+
         match troop.troop_type {
             TroopType::Swordsman => {
                 let step = match troop.team {
@@ -54,17 +64,17 @@ impl BattleField {
         match troop.team {
             Team::Blue => {
                 if troop.x > 960.0 {
-                    return Victor::Blue;
+                    return TroopUpdateResult::zero_change(Victor::Blue);
                 }
             },
             Team::Red => {
                 if troop.x < 0.0 {
-                    return Victor::Red;
+                    return TroopUpdateResult::zero_change(Victor::Red);
                 }
             }
         }
 
-        Victor::None
+        result
     }
 
     pub fn are_troops_touching(a: &Troop, b: &Troop) -> bool {
@@ -101,16 +111,33 @@ impl BattleField {
         };
 
         let original_troops = self.troops.clone();
+        let mut changes_list: Vec<Vec<TroopChange>> = Vec::new();
 
         for troop in &mut self.troops {
-            let new_victor = Self::update_troop(&original_troops, troop, dt);
+            let result = Self::update_troop(&original_troops, troop, dt);
+            let new_victor = result.victor;
+            let change = result.changes;
 
             if let Victor::None = new_victor {
+                changes_list.push(change);
                 continue;
             }
 
             self.victor = new_victor;
             return;
+        }
+
+        for mut changes in changes_list {
+            for change in &mut changes {
+                for troop in &mut self.troops {
+                    if troop.id == change.id {
+                        troop.health += change.health;
+                        troop.x += change.x;
+                        troop.y += change.y;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

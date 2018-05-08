@@ -4,6 +4,7 @@ mod troops;
 mod colors;
 mod victor;
 mod battle_field;
+mod troop_update_result;
 
 use piston_window::{
     PistonWindow,
