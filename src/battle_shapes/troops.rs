@@ -5,7 +5,7 @@ pub struct Troop {
     pub id: u32,
     pub team: Team,
     pub troop_type: TroopType,
-    pub health: u16,
+    pub health: f64,
     pub x: f64,
     pub y: f64
 }
@@ -13,7 +13,7 @@ pub struct Troop {
 pub struct PendingTroopDeployment {
     pub team: Team,
     pub troop_type: TroopType,
-    pub health: u16,
+    pub health: f64,
     pub x: f64,
     pub y: f64
 }
@@ -35,7 +35,7 @@ impl Troop {
             id,
             team,
             troop_type,
-            health: 100,
+            health: 100.0,
             x: 480.0,
             y: 360.0
         }

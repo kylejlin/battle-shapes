@@ -7,7 +7,7 @@ pub struct TroopUpdateResult {
 
 pub struct TroopChange {
     pub id: u32,
-    pub health: u16,
+    pub health: f64,
     pub x: f64,
     pub y: f64
 }

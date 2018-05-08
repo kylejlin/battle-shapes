@@ -90,7 +90,7 @@ impl App {
                         PendingTroopDeployment {
                             team: Team::Blue,
                             troop_type: TroopType::Swordsman,
-                            health: 100,
+                            health: 100.0,
                             x: self.cursor[0],
                             y: self.cursor[1]
                         }
@@ -101,7 +101,7 @@ impl App {
                         PendingTroopDeployment {
                             team: Team::Red,
                             troop_type: TroopType::Swordsman,
-                            health: 100,
+                            health: 100.0,
                             x: self.cursor[0],
                             y: self.cursor[1]
                         }
