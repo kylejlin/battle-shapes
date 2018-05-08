@@ -20,6 +20,7 @@ use piston_window::{
 };
 use self::troops::{
     Troop,
+    PendingTroopDeployment,
     Team,
     TroopType,
     get_team_color,
@@ -85,7 +86,7 @@ impl App {
             match key {
                 Key::D1 => {
                     self.battle_field.add_troop(
-                        Troop {
+                        PendingTroopDeployment {
                             team: Team::Blue,
                             troop_type: TroopType::Swordsman,
                             health: 100,
@@ -96,7 +97,7 @@ impl App {
                 },
                 Key::P => {
                     self.battle_field.add_troop(
-                        Troop {
+                        PendingTroopDeployment {
                             team: Team::Red,
                             troop_type: TroopType::Swordsman,
                             health: 100,

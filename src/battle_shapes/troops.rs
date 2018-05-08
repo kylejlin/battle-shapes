@@ -2,6 +2,15 @@ use super::victor::Victor;
 
 #[derive(Clone)]
 pub struct Troop {
+    pub id: u32,
+    pub team: Team,
+    pub troop_type: TroopType,
+    pub health: u16,
+    pub x: f64,
+    pub y: f64
+}
+
+pub struct PendingTroopDeployment {
     pub team: Team,
     pub troop_type: TroopType,
     pub health: u16,
@@ -21,8 +30,9 @@ pub enum TroopType {
 }
 
 impl Troop {
-    pub fn new(team: Team, troop_type: TroopType) -> Troop {
+    pub fn new(id: u32, team: Team, troop_type: TroopType) -> Troop {
         Troop {
+            id,
             team,
             troop_type,
             health: 100,

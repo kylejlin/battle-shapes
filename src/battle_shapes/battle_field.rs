@@ -1,5 +1,6 @@
 use super::troops::{
     Troop,
+    PendingTroopDeployment,
     Team,
     TroopType,
     troop_properties
@@ -8,14 +9,16 @@ use super::victor::Victor;
 
 pub struct BattleField {
     pub troops: Vec<Troop>,
-    pub victor: Victor
+    pub victor: Victor,
+    id_counter: u32
 }
 
 impl BattleField {
     pub fn new() -> BattleField {
         BattleField {
             troops: Vec::new(),
-            victor: Victor::None
+            victor: Victor::None,
+            id_counter: 0
         }
     }
 
@@ -73,8 +76,20 @@ impl BattleField {
             && (a.y - b.y).abs() < max_gap
     }
 
-    pub fn add_troop(&mut self, troop: Troop) {
-        self.troops.push(troop);
+    pub fn add_troop(&mut self, troop: PendingTroopDeployment) {
+        let id = self.id_counter;
+        self.id_counter = id + 1;
+
+        self.troops.push(
+            Troop {
+                id,
+                team: troop.team,
+                troop_type: troop.troop_type,
+                health: troop.health,
+                x: troop.x,
+                y: troop.y
+            }
+        );
     }
 
     pub fn update(&mut self, dt: f64) {
