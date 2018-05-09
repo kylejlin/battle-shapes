@@ -26,7 +26,8 @@ pub enum Team {
 #[derive(Clone)]
 pub enum TroopType {
     Swordsman,
-    Wall
+    Wall,
+    Giant
 }
 
 impl Team {
@@ -49,42 +50,48 @@ impl TroopType {
     pub fn is_attackable(&self) -> bool {
         match self {
             &TroopType::Swordsman => true,
-            &TroopType::Wall => true
+            &TroopType::Wall => true,
+            &TroopType::Giant => true
         }
     }
 
     pub fn is_movable(&self) -> bool {
         match self {
             &TroopType::Swordsman => true,
-            &TroopType::Wall => false
+            &TroopType::Wall => false,
+            &TroopType::Giant => true
         }
     }
 
     pub fn get_max_health(&self) -> f64 {
         match self {
             &TroopType::Swordsman => 100.0,
-            &TroopType::Wall => 300.0
+            &TroopType::Wall => 300.0,
+            &TroopType::Giant => 250.0
         }
     }
 
     pub fn get_size(&self) -> f64 {
         match self {
             &TroopType::Swordsman => 40.0,
-            &TroopType::Wall => 40.0
+            &TroopType::Wall => 40.0,
+            &TroopType::Giant => 80.0
         }
     }
 
     pub fn get_damage(&self) -> f64 {
         match self {
             &TroopType::Swordsman => 30.0,
-            &TroopType::Wall => 0.0
+            &TroopType::Wall => 0.0,
+            &TroopType::Giant => 50.0
         }
     }
 
     pub fn get_cooldown(&self) -> f64 {
         match self {
             &TroopType::Swordsman => 0.8,
-            &TroopType::Wall => 0.0
+            &TroopType::Wall => 0.0,
+            &TroopType::Giant => 2.5
         }
     }
 }

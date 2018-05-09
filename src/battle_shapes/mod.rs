@@ -73,6 +73,16 @@ impl App {
                         }
                     );
                 },
+                Key::D3 => {
+                    self.battle_field.add_troop(
+                        PendingTroopDeployment{
+                            team: Team::Blue,
+                            troop_type: TroopType::Giant,
+                            x: self.cursor[0],
+                            y: self.cursor[1]
+                        }
+                    );
+                },
                 Key::P => {
                     self.battle_field.add_troop(
                         PendingTroopDeployment {
@@ -88,6 +98,16 @@ impl App {
                         PendingTroopDeployment {
                             team: Team::Red,
                             troop_type: TroopType::Wall,
+                            x: self.cursor[0],
+                            y: self.cursor[1]
+                        }
+                    );
+                },
+                Key::I => {
+                    self.battle_field.add_troop(
+                        PendingTroopDeployment{
+                            team: Team::Red,
+                            troop_type: TroopType::Giant,
                             x: self.cursor[0],
                             y: self.cursor[1]
                         }

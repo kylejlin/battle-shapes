@@ -61,7 +61,7 @@ impl BattleField {
         }
 
         match troop.troop_type {
-            TroopType::Swordsman => {
+            TroopType::Swordsman | TroopType::Giant => {
                 let step = match troop.team {
                     Team::Blue => 20.0,
                     Team::Red => -20.0
@@ -147,7 +147,7 @@ impl BattleField {
         let team_color = troop.team.get_color();
 
         match troop.troop_type {
-            TroopType::Swordsman => {
+            TroopType::Swordsman | TroopType::Giant => {
                 window.draw_2d(event, |c, g| {
                     rectangle(
                         team_color,
