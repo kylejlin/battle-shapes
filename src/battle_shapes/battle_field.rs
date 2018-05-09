@@ -17,7 +17,7 @@ pub struct BattleField {
     id_counter: u32
 }
 
-const HEALTH_BAR_FADE_RATE: f64 = 20.0;
+const HEALTH_BAR_FADE_RATE: f64 = 35.0;
 
 impl BattleField {
     pub fn new() -> BattleField {
@@ -39,6 +39,12 @@ impl BattleField {
             troop.health_bar_counter -= dt * HEALTH_BAR_FADE_RATE;
         } else {
             troop.health_bar_counter = 0.0;
+        }
+
+        if troop.attack_cooldown > dt {
+            troop.attack_cooldown -= dt;
+        } else {
+            troop.attack_cooldown = 0.0;
         }
 
         match troop.troop_type {
@@ -69,7 +75,13 @@ impl BattleField {
                     } else {
                         step.abs()
                     };
-                    let damage = dt * 100.0;
+
+                    let damage = if troop.attack_cooldown == 0.0 {
+                        troop.attack_cooldown = troop_properties::get_cooldown_of_troop_type(&troop.troop_type);
+                        troop_properties::get_damage_of_troop_type(&troop.troop_type)
+                    } else {
+                        0.0
+                    };
 
                     result.changes.push(
                         TroopChange {
@@ -121,7 +133,8 @@ impl BattleField {
                 health: troop.health,
                 x: troop.x,
                 y: troop.y,
-                health_bar_counter: 0.0
+                health_bar_counter: 0.0,
+                attack_cooldown: 0.0
             }
         );
     }

@@ -8,7 +8,8 @@ pub struct Troop {
     pub health: f64,
     pub x: f64,
     pub y: f64,
-    pub health_bar_counter: f64
+    pub health_bar_counter: f64,
+    pub attack_cooldown: f64
 }
 
 pub struct PendingTroopDeployment {
@@ -39,7 +40,8 @@ impl Troop {
             health: 100.0,
             x: 480.0,
             y: 360.0,
-            health_bar_counter: 0.0
+            health_bar_counter: 0.0,
+            attack_cooldown: 0.0
         }
     }
 }
@@ -89,7 +91,29 @@ pub mod troop_properties {
         }
     }
 
+    pub fn get_damage_of_troop_type(troop_type: &TroopType) -> f64 {
+        use self::{
+            swordsman_properties
+        };
+
+        match troop_type {
+            &TroopType::Swordsman => swordsman_properties::DAMAGE
+        }
+    }
+
+    pub fn get_cooldown_of_troop_type(troop_type: &TroopType) -> f64 {
+        use self::{
+            swordsman_properties
+        };
+
+        match troop_type {
+            &TroopType::Swordsman => swordsman_properties::COOLDOWN
+        }
+    }
+
     pub mod swordsman_properties {
         pub const SIZE: f64 = 40.0;
+        pub const DAMAGE: f64 = 30.0;
+        pub const COOLDOWN: f64 = 0.8;
     }
 }
