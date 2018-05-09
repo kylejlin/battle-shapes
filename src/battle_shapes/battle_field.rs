@@ -197,12 +197,16 @@ impl BattleField {
                     );
 
                     if troop.health_bar_counter > 0.0 {
+                        let max_health = troop.troop_type.get_max_health();
+                        let health_bar_width = troop_size * troop.health / max_health;
+                        let health_bar_secondary_width = troop_size * troop.health_bar_counter / max_health;
+
                         rectangle(
                             HEALTH_BAR,
                             [
                                 troop.x - (troop_size * 0.5),
                                 troop.y - (troop_size * 0.8),
-                                troop_size * 0.01 * troop.health,
+                                health_bar_width,
                                 troop_size * 0.1
                             ],
                             c.transform,
@@ -211,9 +215,9 @@ impl BattleField {
                         rectangle(
                             HEALTH_BAR_SECONDARY,
                             [
-                                troop.x - (troop_size * 0.5) + (troop_size * 0.01 * troop.health),
+                                troop.x - (troop_size * 0.5) + (health_bar_width),
                                 troop.y - (troop_size * 0.8),
-                                troop_size * 0.01 * troop.health_bar_counter,
+                                health_bar_secondary_width,
                                 troop_size * 0.1
                             ],
                             c.transform,
@@ -248,12 +252,16 @@ impl BattleField {
                     );
 
                     if troop.health_bar_counter > 0.0 {
+                        let max_health = troop.troop_type.get_max_health();
+                        let health_bar_width = troop_size * troop.health / max_health;
+                        let health_bar_secondary_width = troop_size * troop.health_bar_counter / max_health;
+
                         rectangle(
                             HEALTH_BAR,
                             [
                                 troop.x - (troop_size * 0.5),
                                 troop.y - (troop_size * 0.8),
-                                troop_size * 0.01 * troop.health * (1.0/3.0),
+                                health_bar_width,
                                 troop_size * 0.1
                             ],
                             c.transform,
@@ -262,9 +270,9 @@ impl BattleField {
                         rectangle(
                             HEALTH_BAR_SECONDARY,
                             [
-                                troop.x - (troop_size * 0.5) + (troop_size * 0.01 * troop.health * (1.0/3.0)),
+                                troop.x - (troop_size * 0.5) + health_bar_width,
                                 troop.y - (troop_size * 0.8),
-                                troop_size * 0.01 * troop.health_bar_counter * (1.0/3.0),
+                                health_bar_secondary_width,
                                 troop_size * 0.1
                             ],
                             c.transform,
@@ -284,8 +292,8 @@ impl BattleField {
             Troop {
                 id,
                 team: troop.team,
+                health: troop.troop_type.get_max_health(),
                 troop_type: troop.troop_type,
-                health: troop.health,
                 x: troop.x,
                 y: troop.y,
                 health_bar_counter: 0.0,

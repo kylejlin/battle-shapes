@@ -18,7 +18,6 @@ pub struct Troop {
 pub struct PendingTroopDeployment {
     pub team: Team,
     pub troop_type: TroopType,
-    pub health: f64,
     pub x: f64,
     pub y: f64
 }
