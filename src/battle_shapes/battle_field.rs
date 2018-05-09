@@ -94,8 +94,8 @@ impl BattleField {
                     };
 
                     let damage = if troop.attack_cooldown == 0.0 {
-                        troop.attack_cooldown = troop_properties::get_cooldown_of_troop_type(&troop.troop_type);
-                        troop_properties::get_damage_of_troop_type(&troop.troop_type)
+                        troop.attack_cooldown = troop.troop_type.get_cooldown();
+                        troop.troop_type.get_damage()
                     } else {
                         0.0
                     };
@@ -136,8 +136,8 @@ impl BattleField {
     }
 
     pub fn are_troops_touching(a: &Troop, b: &Troop) -> bool {
-        let a_size = troop_properties::get_size_of_troop_type(&a.troop_type);
-        let b_size = troop_properties::get_size_of_troop_type(&b.troop_type);
+        let a_size = a.troop_type.get_size();
+        let b_size = b.troop_type.get_size();
         let max_gap = (a_size + b_size) / 2.0;
 
         (a.x - b.x).abs() < max_gap
@@ -145,7 +145,7 @@ impl BattleField {
     }
 
     fn render_troop(troop: &Troop, window: &mut PistonWindow, event: &Event) {
-        let troop_size = troop_properties::get_size_of_troop_type(&troop.troop_type);
+        let troop_size = troop.troop_type.get_size();
         let team_color = get_team_color(&troop.team);
 
         match troop.troop_type {

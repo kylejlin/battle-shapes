@@ -1,3 +1,8 @@
+use self::troop_properties::{
+    swordsman_properties,
+    wall_properties
+};
+
 #[derive(Clone)]
 pub struct Troop {
     pub id: u32,
@@ -53,6 +58,34 @@ impl TroopType {
             &TroopType::Wall => false
         }
     }
+
+    pub fn get_max_health(&self) -> f64 {
+        match self {
+            &TroopType::Swordsman => swordsman_properties::MAX_HEALTH,
+            &TroopType::Wall => wall_properties::MAX_HEALTH
+        }
+    }
+
+    pub fn get_size(&self) -> f64 {
+        match self {
+            &TroopType::Swordsman => swordsman_properties::SIZE,
+            &TroopType::Wall => wall_properties::SIZE
+        }
+    }
+
+    pub fn get_damage(&self) -> f64 {
+        match self {
+            &TroopType::Swordsman => swordsman_properties::DAMAGE,
+            &TroopType::Wall => 0.0
+        }
+    }
+
+    pub fn get_cooldown(&self) -> f64 {
+        match self {
+            &TroopType::Swordsman => swordsman_properties::COOLDOWN,
+            &TroopType::Wall => 0.0
+        }
+    }
 }
 
 pub fn get_team_color(team: &Team) -> [f32; 4] {
@@ -63,49 +96,15 @@ pub fn get_team_color(team: &Team) -> [f32; 4] {
 }
 
 pub mod troop_properties {
-    use super::TroopType;
-
-    pub fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
-        use self::{
-            swordsman_properties,
-            wall_properties
-        };
-
-        match troop_type {
-            &TroopType::Swordsman => swordsman_properties::SIZE,
-            &TroopType::Wall => wall_properties::SIZE
-        }
-    }
-
-    pub fn get_damage_of_troop_type(troop_type: &TroopType) -> f64 {
-        use self::{
-            swordsman_properties
-        };
-
-        match troop_type {
-            &TroopType::Swordsman => swordsman_properties::DAMAGE,
-            &TroopType::Wall => 0.0
-        }
-    }
-
-    pub fn get_cooldown_of_troop_type(troop_type: &TroopType) -> f64 {
-        use self::{
-            swordsman_properties
-        };
-
-        match troop_type {
-            &TroopType::Swordsman => swordsman_properties::COOLDOWN,
-            &TroopType::Wall => 0.0
-        }
-    }
-
     pub mod swordsman_properties {
         pub const SIZE: f64 = 40.0;
+        pub const MAX_HEALTH: f64 = 100.0;
         pub const DAMAGE: f64 = 30.0;
         pub const COOLDOWN: f64 = 0.8;
     }
 
     pub mod wall_properties {
+        pub const MAX_HEALTH: f64 = 300.0;
         pub const SIZE: f64 = 40.0;
     }
 }
