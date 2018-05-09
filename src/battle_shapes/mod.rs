@@ -13,7 +13,9 @@ use piston_window::{
 
     UpdateArgs,
     Button,
-    Key
+    Key,
+
+    rectangle
 };
 use self::troops::{
     PendingTroopDeployment,
@@ -40,11 +42,62 @@ impl App {
             blue_coins: 0.0,
             red_coins: 0.0,
             coins_per_second: 10.0,
-            max_coins: 1000.0
+            max_coins: 250.0
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
         self.battle_field.render(window, event);
+        self.render_coins(window, event);
+    }
+
+    pub fn render_coins(&mut self, window: &mut PistonWindow, event: &Event) {
+        window.draw_2d(event, |c, g| {
+            rectangle(
+                [1.0, 1.0, 1.0, 0.5],
+                [
+                    10.0,
+                    10.0,
+                    100.0,
+                    10.0
+                ],
+                c.transform,
+                g
+            );
+            rectangle(
+                [1.0, 1.0, 1.0, 1.0],
+                [
+                    10.0,
+                    10.0,
+                    (self.blue_coins / self.max_coins) * 100.0,
+                    10.0
+                ],
+                c.transform,
+                g
+            );
+
+            rectangle(
+                [1.0, 1.0, 1.0, 0.5],
+                [
+                    850.0,
+                    10.0,
+                    100.0,
+                    10.0
+                ],
+                c.transform,
+                g
+            );
+            rectangle(
+                [1.0, 1.0, 1.0, 1.0],
+                [
+                    850.0,
+                    10.0,
+                    (self.red_coins / self.max_coins) * 100.0,
+                    10.0
+                ],
+                c.transform,
+                g
+            );
+        });
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
