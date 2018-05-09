@@ -11,21 +11,14 @@ use piston_window::{
 
     Event,
 
-    RenderArgs,
     UpdateArgs,
     Button,
-    Key,
-
-    clear,
-    rectangle
+    Key
 };
 use self::troops::{
-    Troop,
     PendingTroopDeployment,
     Team,
-    TroopType,
-    get_team_color,
-    troop_properties
+    TroopType
 };
 use self::victor::Victor;
 use self::battle_field::BattleField;

@@ -9,9 +9,7 @@ use piston_window::{
     RenderEvent,
     UpdateEvent,
     PressEvent,
-    MouseCursorEvent,
-
-    clear
+    MouseCursorEvent
 };
 use battle_shapes::App;
 
@@ -27,7 +25,7 @@ fn main() {
     let mut app = App::new();
 
     while let Some(e) = window.next() {
-        if let Some(render_args) = e.render_args() {
+        if let Some(_render_args) = e.render_args() {
             app.render(&mut window, &e);
         }
 

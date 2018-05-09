@@ -1,5 +1,3 @@
-use super::victor::Victor;
-
 #[derive(Clone)]
 pub struct Troop {
     pub id: u32,
@@ -30,37 +28,6 @@ pub enum Team {
 pub enum TroopType {
     Swordsman
 }
-
-impl Troop {
-    pub fn new(id: u32, team: Team, troop_type: TroopType) -> Troop {
-        Troop {
-            id,
-            team,
-            troop_type,
-            health: 100.0,
-            x: 480.0,
-            y: 360.0,
-            health_bar_counter: 0.0,
-            attack_cooldown: 0.0
-        }
-    }
-}
-
-/*impl std::clone::Clone for Troop {
-    pub fn clone(&self) -> Troop {
-        Troop {
-            team: self.team,
-            troop_type: self.troop_type,
-            health: self.health,
-            x: self.x,
-            y: self.y
-        }
-    }
-
-    pub fn clone_from(&mut self, source: &Troop) {
-
-    }
-}*/
 
 impl Team {
     pub fn enemy(&self) -> Team {

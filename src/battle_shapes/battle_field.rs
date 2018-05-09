@@ -46,10 +46,6 @@ impl BattleField {
         }
     }
 
-    pub fn apply_change(troop: &mut Troop, change: &TroopChange) {
-
-    }
-
     pub fn update_troop(original_troops: &Vec<Troop>, troop: &mut Troop, dt: f64) -> TroopUpdateResult {
         let mut result = TroopUpdateResult::zero_change(Victor::None);
 
@@ -78,10 +74,9 @@ impl BattleField {
                 let mut engaged_troop: Option<&Troop> = None;
 
                 for other_troop in original_troops {
-                    if (
-                        enemy_team == other_troop.team
+                    if enemy_team == other_troop.team
                         && Self::are_troops_touching(troop, other_troop)
-                    ) {
+                    {
                         engaged_troop = Some(other_troop);
                         break;
                     }
