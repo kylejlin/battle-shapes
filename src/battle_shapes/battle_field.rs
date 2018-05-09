@@ -13,8 +13,7 @@ use super::troops::{
     PendingTroopDeployment,
     Team,
     TroopType,
-    troop_properties,
-    get_team_color
+    troop_properties
 };
 use super::victor::Victor;
 use super::troop_update_result::{
@@ -146,7 +145,7 @@ impl BattleField {
 
     fn render_troop(troop: &Troop, window: &mut PistonWindow, event: &Event) {
         let troop_size = troop.troop_type.get_size();
-        let team_color = get_team_color(&troop.team);
+        let team_color = troop.team.get_color();
 
         match troop.troop_type {
             TroopType::Swordsman => {
@@ -315,12 +314,12 @@ impl BattleField {
             },
             Victor::Blue => {
                 window.draw_2d(event, |_c, g| {
-                    clear(get_team_color(&Team::Blue), g);
+                    clear(Team::Blue.get_color(), g);
                 });
             },
             Victor::Red => {
                 window.draw_2d(event, |_c, g| {
-                    clear(get_team_color(&Team::Red), g);
+                    clear(Team::Red.get_color(), g);
                 });
             }
         }

@@ -41,6 +41,13 @@ impl Team {
             &Team::Red => Team::Blue
         }
     }
+
+    pub fn get_color(&self) -> [f32; 4] {
+        match self {
+            &Team::Blue => [0.0, 0.0, 1.0, 1.0],
+            &Team::Red => [1.0, 0.0, 0.0, 1.0]
+        }
+    }
 }
 
 impl TroopType {
@@ -84,13 +91,6 @@ impl TroopType {
             &TroopType::Swordsman => swordsman_properties::COOLDOWN,
             &TroopType::Wall => 0.0
         }
-    }
-}
-
-pub fn get_team_color(team: &Team) -> [f32; 4] {
-    match team {
-        &Team::Blue => [0.0, 0.0, 1.0, 1.0],
-        &Team::Red => [1.0, 0.0, 0.0, 1.0]
     }
 }
 
