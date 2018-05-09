@@ -76,6 +76,7 @@ impl BattleField {
                 for other_troop in original_troops {
                     if enemy_team == other_troop.team
                         && Self::are_troops_touching(troop, other_troop)
+                        && other_troop.troop_type.is_attackable()
                     {
                         engaged_troop = Some(other_troop);
                         break;

@@ -38,6 +38,14 @@ impl Team {
     }
 }
 
+impl TroopType {
+    pub fn is_attackable(&self) -> bool {
+        match self {
+            &TroopType::Swordsman => true
+        }
+    }
+}
+
 pub fn get_team_color(team: &Team) -> [f32; 4] {
     match team {
         &Team::Blue => [0.0, 0.0, 1.0, 1.0],
