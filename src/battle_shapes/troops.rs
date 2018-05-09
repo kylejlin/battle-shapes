@@ -10,6 +10,7 @@ pub struct Troop {
     pub attack_cooldown: f64
 }
 
+#[derive(Clone)]
 pub struct PendingTroopDeployment {
     pub team: Team,
     pub troop_type: TroopType,
@@ -27,7 +28,9 @@ pub enum Team {
 pub enum TroopType {
     Swordsman,
     Wall,
-    Giant
+    Giant,
+    Archer,
+    Arrow
 }
 
 impl Team {
@@ -51,7 +54,9 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => true,
             &TroopType::Wall => true,
-            &TroopType::Giant => true
+            &TroopType::Giant => true,
+            &TroopType::Archer => true,
+            &TroopType::Arrow => false
         }
     }
 
@@ -59,7 +64,9 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => true,
             &TroopType::Wall => false,
-            &TroopType::Giant => true
+            &TroopType::Giant => true,
+            &TroopType::Archer => true,
+            &TroopType::Arrow => false
         }
     }
 
@@ -67,7 +74,9 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 100.0,
             &TroopType::Wall => 300.0,
-            &TroopType::Giant => 250.0
+            &TroopType::Giant => 250.0,
+            &TroopType::Archer => 100.0,
+            &TroopType::Arrow => 1.0
         }
     }
 
@@ -75,7 +84,9 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 40.0,
             &TroopType::Wall => 40.0,
-            &TroopType::Giant => 80.0
+            &TroopType::Giant => 80.0,
+            &TroopType::Archer => 40.0,
+            &TroopType::Arrow => 10.0
         }
     }
 
@@ -83,7 +94,9 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 30.0,
             &TroopType::Wall => 0.0,
-            &TroopType::Giant => 50.0
+            &TroopType::Giant => 50.0,
+            &TroopType::Archer => 0.0,
+            &TroopType::Arrow => 25.0
         }
     }
 
@@ -91,7 +104,9 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 0.8,
             &TroopType::Wall => 0.0,
-            &TroopType::Giant => 2.5
+            &TroopType::Giant => 2.5,
+            &TroopType::Archer => 1.5,
+            &TroopType::Arrow => 0.0
         }
     }
 }

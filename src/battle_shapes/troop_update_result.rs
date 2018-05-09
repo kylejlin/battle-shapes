@@ -1,10 +1,18 @@
 use super::victor::Victor;
+use super::troops::PendingTroopDeployment;
 
 pub struct TroopUpdateResult {
     pub victor: Victor,
-    pub changes: Vec<TroopChange>
+    pub changes: Vec<BattleChange>
 }
 
+#[derive(Clone)]
+pub enum BattleChange {
+    TroopChange(TroopChange),
+    TroopDeployment(PendingTroopDeployment)
+}
+
+#[derive(Clone)]
 pub struct TroopChange {
     pub id: u32,
     pub health: f64,

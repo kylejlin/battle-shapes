@@ -17,6 +17,7 @@ use super::troops::{
 use super::victor::Victor;
 use super::troop_update_result::{
     TroopUpdateResult,
+    BattleChange,
     TroopChange
 };
 use super::colors::{
@@ -104,28 +105,124 @@ impl BattleField {
                     }
 
                     result.changes.push(
-                        TroopChange {
-                            id: engaged_troop.id,
-                            x: dt * step * 3.0 * (is_movable as u8 as f64),
-                            y: dt * vert_step * (is_movable as u8 as f64),
-                            health: -damage,
-                            health_bar_counter: damage
-                        }
+                        BattleChange::TroopChange(
+                            TroopChange {
+                                id: engaged_troop.id,
+                                x: dt * step * 3.0 * (is_movable as u8 as f64),
+                                y: dt * vert_step * (is_movable as u8 as f64),
+                                health: -damage,
+                                health_bar_counter: damage
+                            }
+                        )
                     );
                 }
             },
-            TroopType::Wall => {}
-        }
+            TroopType::Wall => {},
+            TroopType::Archer => {
+                let step = match troop.team {
+                    Team::Blue => 20.0,
+                    Team::Red => -20.0
+                };
 
-        match troop.team {
-            Team::Blue => {
-                if troop.x > 960.0 {
-                    return TroopUpdateResult::zero_change(Victor::Blue);
+                troop.x += dt * step;
+
+                let enemy_team = troop.team.enemy();
+                let mut engaged_troop: Option<&Troop> = None;
+
+                for other_troop in original_troops {
+                    let dx = other_troop.x - troop.x;
+
+                    if enemy_team == other_troop.team
+                        && Self::are_troops_vertically_touching(troop, other_troop)
+                        && dx.signum() == step.signum()
+                        && dx.abs() < 400.0
+                        && other_troop.troop_type.is_attackable()
+                    {
+                        engaged_troop = Some(other_troop);
+                        break;
+                    }
+                }
+
+                if let Some(engaged_troop) = engaged_troop {
+                    troop.x -= dt * step;
+
+                    if troop.attack_cooldown == 0.0 {
+                        troop.attack_cooldown = troop.troop_type.get_cooldown();
+
+                        result.changes.push(
+                            BattleChange::TroopDeployment(
+                                PendingTroopDeployment {
+                                    team: troop.team.clone(),
+                                    troop_type: TroopType::Arrow,
+                                    x: troop.x,
+                                    y: troop.y
+                                }
+                            )
+                        );
+                    }
                 }
             },
-            Team::Red => {
-                if troop.x < 0.0 {
-                    return TroopUpdateResult::zero_change(Victor::Red);
+            TroopType::Arrow => {
+                let step = match troop.team {
+                    Team::Blue => 100.0,
+                    Team::Red => -100.0
+                };
+
+                troop.x += dt * step;
+
+                let enemy_team = troop.team.enemy();
+                let mut engaged_troop: Option<&Troop> = None;
+
+                for other_troop in original_troops {
+                    if enemy_team == other_troop.team
+                        && Self::are_troops_touching(troop, other_troop)
+                        && other_troop.troop_type.is_attackable()
+                    {
+                        engaged_troop = Some(other_troop);
+                        break;
+                    }
+                }
+
+                if let Some(engaged_troop) = engaged_troop {
+                    let damage = troop.troop_type.get_damage();
+
+                    result.changes.push(
+                        BattleChange::TroopChange (
+                            TroopChange {
+                                id: engaged_troop.id,
+                                x: 0.0,
+                                y: 0.0,
+                                health: -damage,
+                                health_bar_counter: damage
+                            }
+                        )
+                    );
+                    result.changes.push(
+                        BattleChange::TroopChange (
+                            TroopChange {
+                                id: troop.id,
+                                x: 0.0,
+                                y: 0.0,
+                                health: -1.0,
+                                health_bar_counter: 0.0
+                            }
+                        )
+                    )
+                }
+            }
+        }
+
+        if troop.troop_type.is_attackable() {
+            match troop.team {
+                Team::Blue => {
+                    if troop.x > 960.0 {
+                        return TroopUpdateResult::zero_change(Victor::Blue);
+                    }
+                },
+                Team::Red => {
+                    if troop.x < 0.0 {
+                        return TroopUpdateResult::zero_change(Victor::Red);
+                    }
                 }
             }
         }
@@ -134,12 +231,24 @@ impl BattleField {
     }
 
     pub fn are_troops_touching(a: &Troop, b: &Troop) -> bool {
+        Self::are_troops_vertically_touching(a, b)
+        && Self::are_troops_horizontally_touching(a, b)
+    }
+
+    pub fn are_troops_horizontally_touching(a: &Troop, b: &Troop) -> bool {
         let a_size = a.troop_type.get_size();
         let b_size = b.troop_type.get_size();
         let max_gap = (a_size + b_size) / 2.0;
 
         (a.x - b.x).abs() < max_gap
-            && (a.y - b.y).abs() < max_gap
+    }
+
+    pub fn are_troops_vertically_touching(a: &Troop, b: &Troop) -> bool {
+        let a_size = a.troop_type.get_size();
+        let b_size = b.troop_type.get_size();
+        let max_gap = (a_size + b_size) / 2.0;
+
+        (a.y - b.y).abs() < max_gap
     }
 
     fn render_troop(troop: &Troop, window: &mut PistonWindow, event: &Event) {
@@ -278,6 +387,76 @@ impl BattleField {
                         );
                     }
                 });
+            },
+            TroopType::Archer => {
+                window.draw_2d(event, |c, g| {
+                    rectangle(
+                        team_color,
+                        [
+                            troop.x - (troop_size / 2.0),
+                            troop.y - (troop_size / 2.0),
+                            troop_size,
+                            troop_size
+                        ],
+                        c.transform,
+                        g
+                    );
+                    rectangle(
+                        WOOD,
+                        [
+                            troop.x - (troop_size * 0.05),
+                            troop.y - (troop_size * 0.35),
+                            troop_size * 0.1,
+                            troop_size * 0.7
+                        ],
+                        c.transform,
+                        g
+                    );
+
+                    if troop.health_bar_counter > 0.0 {
+                        let max_health = troop.troop_type.get_max_health();
+                        let health_bar_width = troop_size * troop.health / max_health;
+                        let health_bar_secondary_width = troop_size * troop.health_bar_counter / max_health;
+
+                        rectangle(
+                            HEALTH_BAR,
+                            [
+                                troop.x - (troop_size * 0.5),
+                                troop.y - (troop_size * 0.8),
+                                health_bar_width,
+                                troop_size * 0.1
+                            ],
+                            c.transform,
+                            g
+                        );
+                        rectangle(
+                            HEALTH_BAR_SECONDARY,
+                            [
+                                troop.x - (troop_size * 0.5) + (health_bar_width),
+                                troop.y - (troop_size * 0.8),
+                                health_bar_secondary_width,
+                                troop_size * 0.1
+                            ],
+                            c.transform,
+                            g
+                        );
+                    }
+                });
+            },
+            TroopType::Arrow => {
+                window.draw_2d(event, |c, g| {
+                    rectangle(
+                        team_color,
+                        [
+                            troop.x - (troop_size / 2.0),
+                            troop.y - (troop_size / 2.0),
+                            troop_size,
+                            troop_size
+                        ],
+                        c.transform,
+                        g
+                    );
+                });
             }
         }
     }
@@ -333,7 +512,7 @@ impl BattleField {
         };
 
         let original_troops = self.troops.clone();
-        let mut changes_list: Vec<Vec<TroopChange>> = Vec::new();
+        let mut changes_list: Vec<Vec<BattleChange>> = Vec::new();
 
         for troop in &mut self.troops {
             let result = Self::update_troop(&original_troops, troop, dt);
@@ -351,13 +530,20 @@ impl BattleField {
 
         for mut changes in changes_list {
             for change in &mut changes {
-                for troop in &mut self.troops {
-                    if troop.id == change.id {
-                        troop.health += change.health;
-                        troop.x += change.x;
-                        troop.y += change.y;
-                        troop.health_bar_counter += change.health_bar_counter;
-                        break;
+                match change.clone() {
+                    BattleChange::TroopChange(troop_change) => {
+                        for troop in &mut self.troops {
+                            if troop.id == troop_change.id {
+                                troop.health += troop_change.health;
+                                troop.x += troop_change.x;
+                                troop.y += troop_change.y;
+                                troop.health_bar_counter += troop_change.health_bar_counter;
+                                break;
+                            }
+                        }
+                    },
+                    BattleChange::TroopDeployment(pending_deployment) => {
+                        self.add_troop(pending_deployment);
                     }
                 }
             }
