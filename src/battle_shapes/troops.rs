@@ -1,8 +1,3 @@
-use self::troop_properties::{
-    swordsman_properties,
-    wall_properties
-};
-
 #[derive(Clone)]
 pub struct Troop {
     pub id: u32,
@@ -67,43 +62,29 @@ impl TroopType {
 
     pub fn get_max_health(&self) -> f64 {
         match self {
-            &TroopType::Swordsman => swordsman_properties::MAX_HEALTH,
-            &TroopType::Wall => wall_properties::MAX_HEALTH
+            &TroopType::Swordsman => 100.0,
+            &TroopType::Wall => 300.0
         }
     }
 
     pub fn get_size(&self) -> f64 {
         match self {
-            &TroopType::Swordsman => swordsman_properties::SIZE,
-            &TroopType::Wall => wall_properties::SIZE
+            &TroopType::Swordsman => 40.0,
+            &TroopType::Wall => 40.0
         }
     }
 
     pub fn get_damage(&self) -> f64 {
         match self {
-            &TroopType::Swordsman => swordsman_properties::DAMAGE,
+            &TroopType::Swordsman => 30.0,
             &TroopType::Wall => 0.0
         }
     }
 
     pub fn get_cooldown(&self) -> f64 {
         match self {
-            &TroopType::Swordsman => swordsman_properties::COOLDOWN,
+            &TroopType::Swordsman => 0.8,
             &TroopType::Wall => 0.0
         }
-    }
-}
-
-pub mod troop_properties {
-    pub mod swordsman_properties {
-        pub const SIZE: f64 = 40.0;
-        pub const MAX_HEALTH: f64 = 100.0;
-        pub const DAMAGE: f64 = 30.0;
-        pub const COOLDOWN: f64 = 0.8;
-    }
-
-    pub mod wall_properties {
-        pub const MAX_HEALTH: f64 = 300.0;
-        pub const SIZE: f64 = 40.0;
     }
 }

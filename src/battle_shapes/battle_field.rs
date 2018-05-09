@@ -12,8 +12,7 @@ use super::troops::{
     Troop,
     PendingTroopDeployment,
     Team,
-    TroopType,
-    troop_properties
+    TroopType
 };
 use super::victor::Victor;
 use super::troop_update_result::{
