@@ -64,22 +64,18 @@ impl BattleField {
                 }
 
                 if let Some(engaged_troop) = engaged_troop {
-                    let step = if troop.y > engaged_troop.y {
-                        step.abs()
-                    } else {
+                    let vert_step = if troop.y > engaged_troop.y {
                         -step.abs()
+                    } else {
+                        step.abs()
                     };
-
-                    // push the enemy
-                    troop.y += dt * step;
-
                     let damage = dt * 100.0;
 
                     result.changes.push(
                         TroopChange {
                             id: engaged_troop.id,
                             x: dt * step * 3.0,
-                            y: 0.0,
+                            y: dt * vert_step,
                             health: -damage,
                             health_bar_counter: damage
                         }
