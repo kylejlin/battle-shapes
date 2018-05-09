@@ -146,11 +146,10 @@ impl BattleField {
 
     fn render_troop(troop: &Troop, window: &mut PistonWindow, event: &Event) {
         let troop_size = troop_properties::get_size_of_troop_type(&troop.troop_type);
+        let team_color = get_team_color(&troop.team);
 
         match troop.troop_type {
             TroopType::Swordsman => {
-                let team_color = get_team_color(&troop.team);
-
                 window.draw_2d(event, |c, g| {
                     rectangle(
                         team_color,
@@ -228,10 +227,21 @@ impl BattleField {
                     rectangle(
                         STONE,
                         [
-                            troop.x - (troop_size / 2.0),
-                            troop.y - (troop_size / 2.0),
+                            troop.x - (troop_size * 0.5),
+                            troop.y - (troop_size * 0.5),
                             troop_size,
                             troop_size
+                        ],
+                        c.transform,
+                        g
+                    );
+                    rectangle(
+                        team_color,
+                        [
+                            troop.x - (troop_size * 0.25),
+                            troop.y - (troop_size * 0.25),
+                            troop_size * 0.5,
+                            troop_size * 0.5
                         ],
                         c.transform,
                         g
