@@ -38,7 +38,7 @@ impl App {
     pub fn new() -> App {
         App {
             battle_field: BattleField::new(),
-            cursor: [0.0, 0.0],
+            cursor: [480.0, 360.0],
             blue_coins: 0.0,
             red_coins: 0.0,
             coins_per_second: 10.0,
