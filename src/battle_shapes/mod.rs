@@ -62,7 +62,18 @@ impl App {
                             x: self.cursor[0],
                             y: self.cursor[1]
                         }
-                    )
+                    );
+                },
+                Key::D2 => {
+                    self.battle_field.add_troop(
+                        PendingTroopDeployment {
+                            team: Team::Blue,
+                            troop_type: TroopType::Wall,
+                            health: 300.0,
+                            x: self.cursor[0],
+                            y: self.cursor[1]
+                        }
+                    );
                 },
                 Key::P => {
                     self.battle_field.add_troop(
@@ -73,8 +84,19 @@ impl App {
                             x: self.cursor[0],
                             y: self.cursor[1]
                         }
-                    )
-                }
+                    );
+                },
+                Key::O => {
+                    self.battle_field.add_troop(
+                        PendingTroopDeployment {
+                            team: Team::Red,
+                            troop_type: TroopType::Wall,
+                            health: 300.0,
+                            x: self.cursor[0],
+                            y: self.cursor[1]
+                        }
+                    );
+                },
                 _ => {}
             }
         }

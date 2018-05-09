@@ -26,7 +26,8 @@ pub enum Team {
 
 #[derive(Clone)]
 pub enum TroopType {
-    Swordsman
+    Swordsman,
+    Wall
 }
 
 impl Team {
@@ -41,7 +42,8 @@ impl Team {
 impl TroopType {
     pub fn is_attackable(&self) -> bool {
         match self {
-            &TroopType::Swordsman => true
+            &TroopType::Swordsman => true,
+            &TroopType::Wall => true
         }
     }
 }
@@ -58,11 +60,13 @@ pub mod troop_properties {
 
     pub fn get_size_of_troop_type(troop_type: &TroopType) -> f64 {
         use self::{
-            swordsman_properties
+            swordsman_properties,
+            wall_properties
         };
 
         match troop_type {
-            &TroopType::Swordsman => swordsman_properties::SIZE
+            &TroopType::Swordsman => swordsman_properties::SIZE,
+            &TroopType::Wall => wall_properties::SIZE
         }
     }
 
@@ -72,7 +76,8 @@ pub mod troop_properties {
         };
 
         match troop_type {
-            &TroopType::Swordsman => swordsman_properties::DAMAGE
+            &TroopType::Swordsman => swordsman_properties::DAMAGE,
+            &TroopType::Wall => 0.0
         }
     }
 
@@ -82,7 +87,8 @@ pub mod troop_properties {
         };
 
         match troop_type {
-            &TroopType::Swordsman => swordsman_properties::COOLDOWN
+            &TroopType::Swordsman => swordsman_properties::COOLDOWN,
+            &TroopType::Wall => 0.0
         }
     }
 
@@ -90,5 +96,9 @@ pub mod troop_properties {
         pub const SIZE: f64 = 40.0;
         pub const DAMAGE: f64 = 30.0;
         pub const COOLDOWN: f64 = 0.8;
+    }
+
+    pub mod wall_properties {
+        pub const SIZE: f64 = 40.0;
     }
 }
