@@ -101,7 +101,7 @@ impl BattleField {
                     };
 
                     if !is_movable {
-                        troop.x -= dt * step;
+                        troop.x -= dt * 3.0 * step;
                         troop.y -= dt * vert_step;
                     }
 
