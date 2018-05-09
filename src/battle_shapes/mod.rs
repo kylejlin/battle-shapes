@@ -27,13 +27,6 @@ use self::troops::{
     get_team_color,
     troop_properties
 };
-use self::colors::{
-    GRASS,
-    IRON,
-    WOOD,
-    HEALTH_BAR,
-    HEALTH_BAR_SECONDARY
-};
 use self::victor::Victor;
 use self::battle_field::BattleField;
 
@@ -50,27 +43,7 @@ impl App {
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
-        match self.battle_field.victor {
-            Victor::None => {
-                window.draw_2d(event, |_c, g| {
-                    clear(GRASS, g);
-                });
-
-                for troop in &self.battle_field.troops {
-                    self.render_troop(troop, window, event);
-                }
-            },
-            Victor::Blue => {
-                window.draw_2d(event, |_c, g| {
-                    clear(get_team_color(&Team::Blue), g);
-                });
-            },
-            Victor::Red => {
-                window.draw_2d(event, |_c, g| {
-                    clear(get_team_color(&Team::Red), g);
-                });
-            }
-        }
+        self.battle_field.render(window, event);
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
@@ -116,87 +89,5 @@ impl App {
 
     pub fn handle_mouse_cursor_move(&mut self, coordinates: [f64; 2]) {
         self.cursor = coordinates;
-    }
-
-    fn render_troop(&self, troop: &Troop, window: &mut PistonWindow, event: &Event) {
-        let troop_size = troop_properties::get_size_of_troop_type(&troop.troop_type);
-
-        match troop.troop_type {
-            TroopType::Swordsman => {
-                let team_color = get_team_color(&troop.team);
-
-                window.draw_2d(event, |c, g| {
-                    rectangle(
-                        team_color,
-                        [
-                            troop.x - (troop_size / 2.0),
-                            troop.y - (troop_size / 2.0),
-                            troop_size,
-                            troop_size
-                        ],
-                        c.transform,
-                        g
-                    );
-                    rectangle(
-                        IRON,
-                        [
-                            troop.x - (troop_size * 0.05),
-                            troop.y - (troop_size * 0.35),
-                            troop_size * 0.1,
-                            troop_size * 0.7
-                        ],
-                        c.transform,
-                        g
-                    );
-                    rectangle(
-                        IRON,
-                        [
-                            troop.x - (troop_size * 0.15),
-                            troop.y + (troop_size * 0.1),
-                            troop_size * 0.3,
-                            troop_size * 0.1
-                        ],
-                        c.transform,
-                        g
-                    );
-                    rectangle(
-                        WOOD,
-                        [
-                            troop.x - (troop_size * 0.05),
-                            troop.y + (troop_size * 0.2),
-                            troop_size * 0.1,
-                            troop_size * 0.15
-                        ],
-                        c.transform,
-                        g
-                    );
-
-                    if troop.health_bar_counter > 0.0 {
-                        rectangle(
-                            HEALTH_BAR,
-                            [
-                                troop.x - (troop_size * 0.5),
-                                troop.y - (troop_size * 0.8),
-                                troop_size * 0.01 * troop.health,
-                                troop_size * 0.1
-                            ],
-                            c.transform,
-                            g
-                        );
-                        rectangle(
-                            HEALTH_BAR_SECONDARY,
-                            [
-                                troop.x - (troop_size * 0.5) + (troop_size * 0.01 * troop.health),
-                                troop.y - (troop_size * 0.8),
-                                troop_size * 0.01 * troop.health_bar_counter,
-                                troop_size * 0.1
-                            ],
-                            c.transform,
-                            g
-                        );
-                    }
-                });
-            }
-        }
     }
 }
