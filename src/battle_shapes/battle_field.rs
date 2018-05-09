@@ -17,6 +17,8 @@ pub struct BattleField {
     id_counter: u32
 }
 
+const HEALTH_BAR_FADE_RATE: f64 = 100.0;
+
 impl BattleField {
     pub fn new() -> BattleField {
         BattleField {
@@ -32,6 +34,12 @@ impl BattleField {
 
     pub fn update_troop(original_troops: &Vec<Troop>, troop: &mut Troop, dt: f64) -> TroopUpdateResult {
         let mut result = TroopUpdateResult::zero_change(Victor::None);
+
+        if troop.health_bar_counter > dt * HEALTH_BAR_FADE_RATE {
+            troop.health_bar_counter -= dt * HEALTH_BAR_FADE_RATE;
+        } else {
+            troop.health_bar_counter = 0.0;
+        }
 
         match troop.troop_type {
             TroopType::Swordsman => {
@@ -62,13 +70,18 @@ impl BattleField {
                         -step.abs()
                     };
 
+                    // push the enemy
                     troop.y += dt * step;
+
+                    let damage = dt * 300.0;
+
                     result.changes.push(
                         TroopChange {
                             id: engaged_troop.id,
                             x: dt * step * 3.0,
                             y: 0.0,
-                            health: dt * -300.0
+                            health: -damage,
+                            health_bar_counter: damage
                         }
                     );
                 }
@@ -111,7 +124,8 @@ impl BattleField {
                 troop_type: troop.troop_type,
                 health: troop.health,
                 x: troop.x,
-                y: troop.y
+                y: troop.y,
+                health_bar_counter: 0.0
             }
         );
     }
@@ -148,6 +162,7 @@ impl BattleField {
                         troop.health += change.health;
                         troop.x += change.x;
                         troop.y += change.y;
+                        troop.health_bar_counter += change.health_bar_counter;
                         break;
                     }
                 }

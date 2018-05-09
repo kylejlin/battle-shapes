@@ -7,7 +7,8 @@ pub struct Troop {
     pub troop_type: TroopType,
     pub health: f64,
     pub x: f64,
-    pub y: f64
+    pub y: f64,
+    pub health_bar_counter: f64
 }
 
 pub struct PendingTroopDeployment {
@@ -37,7 +38,8 @@ impl Troop {
             troop_type,
             health: 100.0,
             x: 480.0,
-            y: 360.0
+            y: 360.0,
+            health_bar_counter: 0.0
         }
     }
 }

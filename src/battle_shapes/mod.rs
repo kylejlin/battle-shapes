@@ -30,7 +30,9 @@ use self::troops::{
 use self::colors::{
     GRASS,
     IRON,
-    WOOD
+    WOOD,
+    HEALTH_BAR,
+    HEALTH_BAR_SECONDARY
 };
 use self::victor::Victor;
 use self::battle_field::BattleField;
@@ -168,6 +170,31 @@ impl App {
                         c.transform,
                         g
                     );
+
+                    if troop.health_bar_counter > 0.0 {
+                        rectangle(
+                            HEALTH_BAR,
+                            [
+                                troop.x - (troop_size * 0.5),
+                                troop.y - (troop_size * 0.8),
+                                troop_size * 0.01 * troop.health,
+                                troop_size * 0.1
+                            ],
+                            c.transform,
+                            g
+                        );
+                        rectangle(
+                            HEALTH_BAR_SECONDARY,
+                            [
+                                troop.x - (troop_size * 0.5) + (troop_size * 0.01 * troop.health),
+                                troop.y - (troop_size * 0.8),
+                                troop_size * 0.01 * troop.health_bar_counter,
+                                troop_size * 0.1
+                            ],
+                            c.transform,
+                            g
+                        );
+                    }
                 });
             }
         }
