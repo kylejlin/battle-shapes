@@ -46,6 +46,13 @@ impl TroopType {
             &TroopType::Wall => true
         }
     }
+
+    pub fn is_movable(&self) -> bool {
+        match self {
+            &TroopType::Swordsman => true,
+            &TroopType::Wall => false
+        }
+    }
 }
 
 pub fn get_team_color(team: &Team) -> [f32; 4] {

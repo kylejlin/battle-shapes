@@ -85,6 +85,8 @@ impl BattleField {
                 }
 
                 if let Some(engaged_troop) = engaged_troop {
+                    let is_movable = engaged_troop.troop_type.is_movable();
+
                     let vert_step = if troop.y > engaged_troop.y {
                         -step.abs()
                     } else {
@@ -98,11 +100,16 @@ impl BattleField {
                         0.0
                     };
 
+                    if !is_movable {
+                        troop.x -= dt * step;
+                        troop.y -= dt * vert_step;
+                    }
+
                     result.changes.push(
                         TroopChange {
                             id: engaged_troop.id,
-                            x: dt * step * 3.0,
-                            y: dt * vert_step,
+                            x: dt * step * 3.0 * (is_movable as u8 as f64),
+                            y: dt * vert_step * (is_movable as u8 as f64),
                             health: -damage,
                             health_bar_counter: damage
                         }
