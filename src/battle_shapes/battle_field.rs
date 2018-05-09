@@ -17,7 +17,7 @@ pub struct BattleField {
     id_counter: u32
 }
 
-const HEALTH_BAR_FADE_RATE: f64 = 100.0;
+const HEALTH_BAR_FADE_RATE: f64 = 20.0;
 
 impl BattleField {
     pub fn new() -> BattleField {
@@ -73,7 +73,7 @@ impl BattleField {
                     // push the enemy
                     troop.y += dt * step;
 
-                    let damage = dt * 300.0;
+                    let damage = dt * 100.0;
 
                     result.changes.push(
                         TroopChange {
