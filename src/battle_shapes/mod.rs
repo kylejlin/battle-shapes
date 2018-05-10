@@ -221,6 +221,9 @@ impl App {
                 Key::D4 => {
                     self.add_blue_troop_if_legal(TroopType::Wall);
                 },
+                Key::D5 => {
+                    self.add_blue_troop_if_legal(TroopType::Daggerman);
+                }
                 Key::D0 => {
                     self.add_red_troop_if_legal(TroopType::Swordsman);
                 },
@@ -232,6 +235,9 @@ impl App {
                 },
                 Key::D7 => {
                     self.add_red_troop_if_legal(TroopType::Wall);
+                },
+                Key::D6 => {
+                    self.add_red_troop_if_legal(TroopType::Daggerman);
                 },
                 _ => {}
             }
