@@ -39,6 +39,12 @@ fn is_sandbox_mode_on() -> bool {
     args.contains(&String::from("sandbox"))
 }
 
+fn is_big_money_mode_on() -> bool {
+    let args: Vec<String> = env::args().collect();
+
+    args.contains(&String::from("big-money"))
+}
+
 fn rand_int(min_incl: f64, max_excl: f64) -> f64 {
     rand::thread_rng().gen_range(min_incl, max_excl)
 }
@@ -58,7 +64,8 @@ pub struct App {
     pub coins_per_second: f64,
     pub max_coins: f64,
     pub border: f64,
-    pub is_sandbox_mode_on: bool
+    pub is_sandbox_mode_on: bool,
+    pub is_big_money_mode_on: bool
 }
 
 impl App {
@@ -71,7 +78,8 @@ impl App {
             coins_per_second: 10.0,
             max_coins: 250.0,
             border: 300.0,
-            is_sandbox_mode_on: is_sandbox_mode_on()
+            is_sandbox_mode_on: is_sandbox_mode_on(),
+            is_big_money_mode_on: is_big_money_mode_on()
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
@@ -167,8 +175,14 @@ impl App {
     pub fn update(&mut self, args: &UpdateArgs) {
         self.battle_field.update(args.dt);
 
-        self.blue_coins += self.coins_per_second * args.dt;
-        self.red_coins += self.coins_per_second * args.dt;
+        let money_multiplier = if self.is_big_money_mode_on {
+            5.0
+        } else {
+            1.0
+        };
+
+        self.blue_coins += money_multiplier * self.coins_per_second * args.dt;
+        self.red_coins += money_multiplier * self.coins_per_second * args.dt;
 
         if self.blue_coins > self.max_coins {
             self.blue_coins = self.max_coins;
