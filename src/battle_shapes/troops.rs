@@ -127,4 +127,15 @@ impl TroopType {
             &TroopType::Daggerman => 50.0
         }
     }
+
+    pub fn get_abs_step(&self) -> f64 {
+        match self {
+            &TroopType::Swordsman => 20.0,
+            &TroopType::Wall => 0.0,
+            &TroopType::Giant => 12.0,
+            &TroopType::Archer => 20.0,
+            &TroopType::Arrow => 600.0,
+            &TroopType::Daggerman => 20.0
+        }
+    }
 }

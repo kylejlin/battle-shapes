@@ -60,11 +60,16 @@ impl BattleField {
             troop.attack_cooldown = 0.0;
         }
 
+        let step = troop.troop_type.get_abs_step() * match troop.team {
+            Team::Blue => 1.0,
+            Team::Red => -1.0
+        };
+
         match troop.troop_type {
             TroopType::Swordsman | TroopType::Giant | TroopType::Daggerman => {
-                let step = match troop.team {
-                    Team::Blue => 20.0,
-                    Team::Red => -20.0
+                let step = troop.troop_type.get_abs_step() * match troop.team {
+                    Team::Blue => 1.0,
+                    Team::Red => -1.0
                 };
 
                 troop.x += dt * step;
@@ -118,9 +123,9 @@ impl BattleField {
             },
             TroopType::Wall => {},
             TroopType::Archer => {
-                let step = match troop.team {
-                    Team::Blue => 20.0,
-                    Team::Red => -20.0
+                let step = troop.troop_type.get_abs_step() * match troop.team {
+                    Team::Blue => 1.0,
+                    Team::Red => -1.0
                 };
 
                 troop.x += dt * step;
@@ -162,9 +167,9 @@ impl BattleField {
                 }
             },
             TroopType::Arrow => {
-                let step = match troop.team {
-                    Team::Blue => 600.0,
-                    Team::Red => -600.0
+                let step = troop.troop_type.get_abs_step() * match troop.team {
+                    Team::Blue => 1.0,
+                    Team::Red => -1.0
                 };
 
                 troop.x += dt * step;
