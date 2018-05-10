@@ -134,7 +134,7 @@ impl BattleField {
                     if enemy_team == other_troop.team
                         && Self::are_troops_vertically_touching(troop, other_troop)
                         && dx.signum() == step.signum()
-                        && dx.abs() < 400.0
+                        && dx.abs() < 360.0
                         && other_troop.troop_type.is_attackable()
                     {
                         engaged_troop = Some(other_troop);
