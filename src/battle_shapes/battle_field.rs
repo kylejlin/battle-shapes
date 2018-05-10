@@ -163,8 +163,8 @@ impl BattleField {
             },
             TroopType::Arrow => {
                 let step = match troop.team {
-                    Team::Blue => 100.0,
-                    Team::Red => -100.0
+                    Team::Blue => 600.0,
+                    Team::Red => -600.0
                 };
 
                 troop.x += dt * step;
