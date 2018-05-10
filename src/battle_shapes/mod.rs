@@ -26,6 +26,7 @@ use self::rand::Rng;
 
 use self::troops::{
     PendingTroopDeployment,
+    Troop,
     Team,
     TroopType
 };
@@ -321,12 +322,41 @@ impl App {
     pub fn update_computer(&mut self, dt: f64) {
         let position = rand_position();
 
-        if self.red_coins > 30.0 {
-            self.force_add_red_troop(
-                TroopType::Swordsman,
-                position.0,
-                position.1
-            );
+        let troops = self.battle_field.troops.clone();
+        let mut threat: Option<&Troop> = None;
+
+        for troop in &troops {
+            if let Team::Red = troop.team {
+                continue;
+            }
+
+            if troop.x > 660.0 {
+                if let Some(current_threat) = threat {
+                    if troop.x > current_threat.x {
+                        threat = Some(troop);
+                    }
+                } else {
+                    threat = Some(troop);
+                }
+            }
+        }
+
+        if let Some(threat) = threat {
+            if self.red_coins > TroopType::Wall.get_cost() {
+                self.force_add_red_troop(
+                    TroopType::Wall,
+                    threat.x,
+                    threat.y
+                );
+            }
+        } else {
+            /*if self.red_coins > 30.0 {
+                self.force_add_red_troop(
+                    TroopType::Swordsman,
+                    position.0,
+                    position.1
+                );
+            }*/
         }
     }
 }
