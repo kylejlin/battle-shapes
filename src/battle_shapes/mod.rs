@@ -1,4 +1,5 @@
 extern crate piston_window;
+extern crate rand;
 
 mod troops;
 mod colors;
@@ -20,6 +21,9 @@ use piston_window::{
     rectangle,
     clear
 };
+use self::rand::Rng;
+
+
 use self::troops::{
     PendingTroopDeployment,
     Team,
@@ -33,6 +37,10 @@ fn is_sandbox_mode_on() -> bool {
     let args: Vec<String> = env::args().collect();
 
     args.contains(&String::from("sandbox"))
+}
+
+fn rand_int(min_incl: f64, max_excl: f64) -> f64 {
+    rand::thread_rng().gen_range(min_incl, max_excl)
 }
 
 pub struct App {
@@ -275,8 +283,8 @@ impl App {
         if self.red_coins > 60.0 {
             self.force_add_red_troop(
                 TroopType::Archer,
-                700.0,
-                360.0
+                rand_int(660.0, 960.0),
+                rand_int(0.0, 360.0)
             );
         }
     }
