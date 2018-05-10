@@ -15,7 +15,8 @@ use piston_window::{
     Button,
     Key,
 
-    rectangle
+    rectangle,
+    clear
 };
 use self::troops::{
     PendingTroopDeployment,
@@ -24,6 +25,7 @@ use self::troops::{
 };
 use self::victor::Victor;
 use self::battle_field::BattleField;
+use self::colors::GRASS;
 
 pub struct App {
     pub battle_field: BattleField,
@@ -48,9 +50,10 @@ impl App {
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
-        self.battle_field.render(window, event);
-        self.render_coins(window, event);
+        self.render_background(window, event);
         self.render_borders(window, event);
+        self.battle_field.render_troops(window, event);
+        self.render_coins(window, event);
     }
 
     pub fn render_coins(&mut self, window: &mut PistonWindow, event: &Event) {
@@ -127,6 +130,12 @@ impl App {
                 c.transform,
                 g
             );
+        });
+    }
+
+    pub fn render_background(&mut self, window: &mut PistonWindow, event: &Event) {
+        window.draw_2d(event, |_c, g| {
+            clear(GRASS, g);
         });
     }
 

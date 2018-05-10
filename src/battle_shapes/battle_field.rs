@@ -21,7 +21,6 @@ use super::troop_update_result::{
     TroopChange
 };
 use super::colors::{
-    GRASS,
     IRON,
     WOOD,
     STONE,
@@ -479,13 +478,9 @@ impl BattleField {
         );
     }
 
-    pub fn render(&self, window: &mut PistonWindow, event: &Event) {
+    pub fn render_troops(&self, window: &mut PistonWindow, event: &Event) {
         match self.victor {
             Victor::None => {
-                window.draw_2d(event, |_c, g| {
-                    clear(GRASS, g);
-                });
-
                 for troop in &self.troops {
                     Self::render_troop(troop, window, event);
                 }
