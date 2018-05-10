@@ -24,6 +24,7 @@ use super::colors::{
     IRON,
     WOOD,
     STONE,
+    FLINT,
     HEALTH_BAR,
     HEALTH_BAR_SECONDARY
 };
@@ -449,13 +450,41 @@ impl BattleField {
             },
             TroopType::Arrow => {
                 window.draw_2d(event, |c, g| {
+                    let multiplier = match &troop.team {
+                        &Team::Blue => -3.0,
+                        &Team::Red => 0.5
+                    };
+
                     rectangle(
-                        team_color,
+                        WOOD,
                         [
-                            troop.x - (troop_size / 2.0),
-                            troop.y - (troop_size / 2.0),
+                            troop.x + multiplier * troop_size,
+                            troop.y - (troop_size * 0.25),
+                            troop_size * 3.0,
+                            troop_size * 0.5
+                        ],
+                        c.transform,
+                        g
+                    );
+
+                    rectangle(
+                        FLINT,
+                        [
+                            troop.x - (troop_size * 0.5),
+                            troop.y - (troop_size * 0.5),
                             troop_size,
                             troop_size
+                        ],
+                        c.transform,
+                        g
+                    );
+                    rectangle(
+                        FLINT,
+                        [
+                            troop.x + (troop_size * 0.5),
+                            troop.y - (troop_size * 0.25),
+                            troop_size * 0.5,
+                            troop_size * 0.5
                         ],
                         c.transform,
                         g
