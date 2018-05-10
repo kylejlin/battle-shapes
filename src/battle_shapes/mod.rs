@@ -31,7 +31,8 @@ pub struct App {
     pub blue_coins: f64,
     pub red_coins: f64,
     pub coins_per_second: f64,
-    pub max_coins: f64
+    pub max_coins: f64,
+    pub border: f64
 }
 
 impl App {
@@ -42,12 +43,14 @@ impl App {
             blue_coins: 0.0,
             red_coins: 0.0,
             coins_per_second: 10.0,
-            max_coins: 250.0
+            max_coins: 250.0,
+            border: 300.0
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
         self.battle_field.render(window, event);
         self.render_coins(window, event);
+        self.render_borders(window, event);
     }
 
     pub fn render_coins(&mut self, window: &mut PistonWindow, event: &Event) {
@@ -100,6 +103,33 @@ impl App {
         });
     }
 
+    pub fn render_borders(&mut self, window: &mut PistonWindow, event: &Event) {
+        window.draw_2d(event, |c, g| {
+            rectangle(
+                [1.0, 1.0, 1.0, 0.5],
+                [
+                    self.border,
+                    0.0,
+                    1.0,
+                    720.0
+                ],
+                c.transform,
+                g
+            );
+            rectangle(
+                [1.0, 1.0, 1.0, 0.5],
+                [
+                    960.0 - self.border,
+                    0.0,
+                    1.0,
+                    720.0
+                ],
+                c.transform,
+                g
+            );
+        });
+    }
+
     pub fn update(&mut self, args: &UpdateArgs) {
         self.battle_field.update(args.dt);
 
@@ -126,28 +156,28 @@ impl App {
         if let &Button::Keyboard(key) = args {
             match key {
                 Key::D1 => {
-                    self.add_blue_troop_if_affordable(TroopType::Swordsman);
+                    self.add_blue_troop_if_legal(TroopType::Swordsman);
                 },
                 Key::D2 => {
-                    self.add_blue_troop_if_affordable(TroopType::Archer);
+                    self.add_blue_troop_if_legal(TroopType::Archer);
                 },
                 Key::D3 => {
-                    self.add_blue_troop_if_affordable(TroopType::Giant);
+                    self.add_blue_troop_if_legal(TroopType::Giant);
                 },
                 Key::D4 => {
-                    self.add_blue_troop_if_affordable(TroopType::Wall);
+                    self.add_blue_troop_if_legal(TroopType::Wall);
                 },
                 Key::D0 => {
-                    self.add_red_troop_if_affordable(TroopType::Swordsman);
+                    self.add_red_troop_if_legal(TroopType::Swordsman);
                 },
                 Key::D9 => {
-                    self.add_red_troop_if_affordable(TroopType::Archer);
+                    self.add_red_troop_if_legal(TroopType::Archer);
                 },
                 Key::D8 => {
-                    self.add_red_troop_if_affordable(TroopType::Giant);
+                    self.add_red_troop_if_legal(TroopType::Giant);
                 },
                 Key::D7 => {
-                    self.add_red_troop_if_affordable(TroopType::Wall);
+                    self.add_red_troop_if_legal(TroopType::Wall);
                 },
                 _ => {}
             }
@@ -158,10 +188,14 @@ impl App {
         self.cursor = coordinates;
     }
 
-    pub fn add_blue_troop_if_affordable(&mut self, troop_type: TroopType) {
+    // "legal" = affordable and onsides
+
+    pub fn add_blue_troop_if_legal(&mut self, troop_type: TroopType) {
         let cost = troop_type.get_cost();
 
-        if self.blue_coins >= cost {
+        if self.blue_coins >= cost
+            &&self.cursor[0] <= self.border
+        {
             self.blue_coins -= cost;
 
             self.battle_field.add_troop(
@@ -175,10 +209,12 @@ impl App {
         }
     }
 
-    pub fn add_red_troop_if_affordable(&mut self, troop_type: TroopType) {
+    pub fn add_red_troop_if_legal(&mut self, troop_type: TroopType) {
         let cost = troop_type.get_cost();
 
-        if self.red_coins >= cost {
+        if self.red_coins >= cost
+            &&self.cursor[0] >= (960.0 - self.border)
+        {
             self.red_coins -= cost;
 
             self.battle_field.add_troop(
