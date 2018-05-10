@@ -216,14 +216,17 @@ impl App {
                     self.add_blue_troop_if_legal(TroopType::Archer);
                 },
                 Key::D3 => {
-                    self.add_blue_troop_if_legal(TroopType::Giant);
+                    self.add_blue_troop_if_legal(TroopType::Rider);
                 },
                 Key::D4 => {
-                    self.add_blue_troop_if_legal(TroopType::Wall);
+                    self.add_blue_troop_if_legal(TroopType::Giant);
                 },
                 Key::D5 => {
                     self.add_blue_troop_if_legal(TroopType::Daggerman);
-                }
+                },
+                Key::Q => {
+                    self.add_blue_troop_if_legal(TroopType::Wall);
+                },
                 Key::D0 => {
                     self.add_red_troop_if_legal(TroopType::Swordsman);
                 },
@@ -231,13 +234,16 @@ impl App {
                     self.add_red_troop_if_legal(TroopType::Archer);
                 },
                 Key::D8 => {
-                    self.add_red_troop_if_legal(TroopType::Giant);
+                    self.add_red_troop_if_legal(TroopType::Rider);
                 },
                 Key::D7 => {
-                    self.add_red_troop_if_legal(TroopType::Wall);
+                    self.add_red_troop_if_legal(TroopType::Giant);
                 },
                 Key::D6 => {
                     self.add_red_troop_if_legal(TroopType::Daggerman);
+                },
+                Key::P => {
+                    self.add_red_troop_if_legal(TroopType::Wall);
                 },
                 _ => {}
             }
