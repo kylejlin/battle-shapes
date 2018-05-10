@@ -32,7 +32,8 @@ pub enum TroopType {
     Archer,
     Arrow,
     Daggerman,
-    Rider
+    Rider,
+    Shieldsman
 }
 
 impl Team {
@@ -60,7 +61,8 @@ impl TroopType {
             &TroopType::Archer => true,
             &TroopType::Arrow => false,
             &TroopType::Daggerman => true,
-            &TroopType::Rider => true
+            &TroopType::Rider => true,
+            &TroopType::Shieldsman => true
         }
     }
 
@@ -72,7 +74,8 @@ impl TroopType {
             &TroopType::Archer => true,
             &TroopType::Arrow => false,
             &TroopType::Daggerman => true,
-            &TroopType::Rider => true
+            &TroopType::Rider => true,
+            &TroopType::Shieldsman => true
         }
     }
 
@@ -84,7 +87,8 @@ impl TroopType {
             &TroopType::Archer => 100.0,
             &TroopType::Arrow => 1.0,
             &TroopType::Daggerman => 50.0,
-            &TroopType::Rider => 100.0
+            &TroopType::Rider => 100.0,
+            &TroopType::Shieldsman => 250.0
         }
     }
 
@@ -96,7 +100,8 @@ impl TroopType {
             &TroopType::Archer => 40.0,
             &TroopType::Arrow => 10.0,
             &TroopType::Daggerman => 40.0,
-            &TroopType::Rider => 40.0
+            &TroopType::Rider => 40.0,
+            &TroopType::Shieldsman => 40.0
         }
     }
 
@@ -108,7 +113,8 @@ impl TroopType {
             &TroopType::Archer => 0.0,
             &TroopType::Arrow => 25.0,
             &TroopType::Daggerman => 20.0,
-            &TroopType::Rider => 25.0
+            &TroopType::Rider => 25.0,
+            &TroopType::Shieldsman => 0.0
         }
     }
 
@@ -120,7 +126,8 @@ impl TroopType {
             &TroopType::Archer => 2.0,
             &TroopType::Arrow => 0.0,
             &TroopType::Daggerman => 0.15,
-            &TroopType::Rider => 1.0
+            &TroopType::Rider => 1.0,
+            &TroopType::Shieldsman => 1.0
         }
     }
 
@@ -132,7 +139,8 @@ impl TroopType {
             &TroopType::Archer => 60.0,
             &TroopType::Arrow => 0.0,
             &TroopType::Daggerman => 50.0,
-            &TroopType::Rider => 50.0
+            &TroopType::Rider => 50.0,
+            &TroopType::Shieldsman => 40.0
         }
     }
 
@@ -144,7 +152,8 @@ impl TroopType {
             &TroopType::Archer => 20.0,
             &TroopType::Arrow => 600.0,
             &TroopType::Daggerman => 25.0,
-            &TroopType::Rider => 80.0
+            &TroopType::Rider => 80.0,
+            &TroopType::Shieldsman => 35.0
         }
     }
 }
