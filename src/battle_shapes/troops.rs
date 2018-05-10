@@ -74,7 +74,7 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 100.0,
             &TroopType::Wall => 300.0,
-            &TroopType::Giant => 250.0,
+            &TroopType::Giant => 300.0,
             &TroopType::Archer => 100.0,
             &TroopType::Arrow => 1.0
         }
