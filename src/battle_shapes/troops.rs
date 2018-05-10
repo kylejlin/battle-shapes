@@ -105,7 +105,7 @@ impl TroopType {
             &TroopType::Swordsman => 0.8,
             &TroopType::Wall => 0.0,
             &TroopType::Giant => 2.5,
-            &TroopType::Archer => 1.5,
+            &TroopType::Archer => 2.0,
             &TroopType::Arrow => 0.0
         }
     }
