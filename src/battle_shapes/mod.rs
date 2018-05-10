@@ -6,6 +6,8 @@ mod victor;
 mod battle_field;
 mod troop_update_result;
 
+use std::env;
+
 use piston_window::{
     PistonWindow,
 
@@ -27,6 +29,12 @@ use self::victor::Victor;
 use self::battle_field::BattleField;
 use self::colors::GRASS;
 
+fn is_sandbox_mode_on() -> bool {
+    let args: Vec<String> = env::args().collect();
+
+    args.contains(&String::from("sandbox"))
+}
+
 pub struct App {
     pub battle_field: BattleField,
     pub cursor: [f64; 2],
@@ -34,7 +42,8 @@ pub struct App {
     pub red_coins: f64,
     pub coins_per_second: f64,
     pub max_coins: f64,
-    pub border: f64
+    pub border: f64,
+    pub is_sandbox_mode_on: bool
 }
 
 impl App {
@@ -46,7 +55,8 @@ impl App {
             red_coins: 0.0,
             coins_per_second: 10.0,
             max_coins: 250.0,
-            border: 300.0
+            border: 300.0,
+            is_sandbox_mode_on: is_sandbox_mode_on()
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
@@ -152,6 +162,12 @@ impl App {
         if self.red_coins > self.max_coins {
             self.red_coins = self.max_coins;
         }
+
+
+
+        if !self.is_sandbox_mode_on {
+            self.update_computer(args.dt);
+        }
     }
 
     pub fn handle_button_press(&mut self, args: &Button) {
@@ -218,11 +234,14 @@ impl App {
         }
     }
 
+    // "legal" = affordable and onsides and is_sandbox_mode_on==true
+
     pub fn add_red_troop_if_legal(&mut self, troop_type: TroopType) {
         let cost = troop_type.get_cost();
 
         if self.red_coins >= cost
             &&self.cursor[0] >= (960.0 - self.border)
+            &&self.is_sandbox_mode_on
         {
             self.red_coins -= cost;
 
@@ -236,5 +255,29 @@ impl App {
             );
         }
 
+    }
+
+    fn force_add_red_troop(&mut self, troop_type: TroopType, x: f64, y: f64) {
+        let cost = troop_type.get_cost();
+        self.red_coins -= cost;
+
+        self.battle_field.add_troop(
+            PendingTroopDeployment{
+                team: Team::Red,
+                troop_type,
+                x,
+                y
+            }
+        );
+    }
+
+    pub fn update_computer(&mut self, dt: f64) {
+        if self.red_coins > 60.0 {
+            self.force_add_red_troop(
+                TroopType::Archer,
+                700.0,
+                360.0
+            );
+        }
     }
 }
