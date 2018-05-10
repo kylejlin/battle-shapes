@@ -113,7 +113,7 @@ impl TroopType {
     pub fn get_cost(&self) -> f64 {
         match self {
             &TroopType::Swordsman => 30.0,
-            &TroopType::Wall => 5.0,
+            &TroopType::Wall => 10.0,
             &TroopType::Giant => 50.0,
             &TroopType::Archer => 60.0,
             &TroopType::Arrow => 0.0
