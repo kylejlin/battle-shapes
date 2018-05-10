@@ -74,7 +74,7 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 100.0,
             &TroopType::Wall => 300.0,
-            &TroopType::Giant => 300.0,
+            &TroopType::Giant => 1000.0,
             &TroopType::Archer => 100.0,
             &TroopType::Arrow => 1.0
         }
@@ -94,7 +94,7 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 30.0,
             &TroopType::Wall => 0.0,
-            &TroopType::Giant => 50.0,
+            &TroopType::Giant => 100.0,
             &TroopType::Archer => 0.0,
             &TroopType::Arrow => 25.0
         }
@@ -104,7 +104,7 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 0.8,
             &TroopType::Wall => 0.0,
-            &TroopType::Giant => 2.5,
+            &TroopType::Giant => 3.5,
             &TroopType::Archer => 2.0,
             &TroopType::Arrow => 0.0
         }
@@ -114,7 +114,7 @@ impl TroopType {
         match self {
             &TroopType::Swordsman => 30.0,
             &TroopType::Wall => 10.0,
-            &TroopType::Giant => 50.0,
+            &TroopType::Giant => 100.0,
             &TroopType::Archer => 60.0,
             &TroopType::Arrow => 0.0
         }
