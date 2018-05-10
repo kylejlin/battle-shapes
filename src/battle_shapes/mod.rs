@@ -43,6 +43,13 @@ fn rand_int(min_incl: f64, max_excl: f64) -> f64 {
     rand::thread_rng().gen_range(min_incl, max_excl)
 }
 
+fn rand_position() -> (f64, f64) {
+    (
+        rand_int(660.0, 960.0),
+        rand_int(0.0, 720.0)
+    )
+}
+
 pub struct App {
     pub battle_field: BattleField,
     pub cursor: [f64; 2],
@@ -280,11 +287,13 @@ impl App {
     }
 
     pub fn update_computer(&mut self, dt: f64) {
-        if self.red_coins > 60.0 {
+        let position = rand_position();
+
+        if self.red_coins > 30.0 {
             self.force_add_red_troop(
-                TroopType::Archer,
-                rand_int(660.0, 960.0),
-                rand_int(0.0, 360.0)
+                TroopType::Swordsman,
+                position.0,
+                position.1
             );
         }
     }
