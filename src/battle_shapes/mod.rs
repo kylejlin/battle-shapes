@@ -45,7 +45,7 @@ fn is_big_money_mode_on() -> bool {
     let args: Vec<String> = env::args().collect();
 
     args.contains(&String::from("--big-money"))
-    || args.contains(&String::from("-b"))
+    || args.contains(&String::from("-m"))
 }
 
 fn rand_int(min_incl: f64, max_excl: f64) -> f64 {
