@@ -48,6 +48,13 @@ fn is_big_money_mode_on() -> bool {
     || args.contains(&String::from("-m"))
 }
 
+fn is_freespawn_mode_on() -> bool {
+    let args: Vec<String> = env::args().collect();
+
+    args.contains(&String::from("--freespawn"))
+    || args.contains(&String::from("-f"))
+}
+
 fn rand_int(min_incl: f64, max_excl: f64) -> f64 {
     rand::thread_rng().gen_range(min_incl, max_excl)
 }
@@ -68,7 +75,8 @@ pub struct App {
     pub max_coins: f64,
     pub border: f64,
     pub is_sandbox_mode_on: bool,
-    pub is_big_money_mode_on: bool
+    pub is_big_money_mode_on: bool,
+    pub is_freespawn_mode_on: bool
 }
 
 impl App {
@@ -82,7 +90,8 @@ impl App {
             max_coins: 250.0,
             border: 300.0,
             is_sandbox_mode_on: is_sandbox_mode_on(),
-            is_big_money_mode_on: is_big_money_mode_on()
+            is_big_money_mode_on: is_big_money_mode_on(),
+            is_freespawn_mode_on: is_freespawn_mode_on()
         }
     }
     pub fn render(&mut self, window: &mut PistonWindow, event: &Event) {
@@ -275,7 +284,10 @@ impl App {
         let cost = troop_type.get_cost();
 
         if self.blue_coins >= cost
-            &&self.cursor[0] <= self.border
+            &&(
+                self.cursor[0] <= self.border
+                || self.is_freespawn_mode_on
+            )
         {
             self.blue_coins -= cost;
 
@@ -296,7 +308,10 @@ impl App {
         let cost = troop_type.get_cost();
 
         if self.red_coins >= cost
-            &&self.cursor[0] >= (960.0 - self.border)
+            && (
+                self.cursor[0] >= (960.0 - self.border)
+                || self.is_freespawn_mode_on
+            )
             &&self.is_sandbox_mode_on
         {
             self.red_coins -= cost;
