@@ -235,16 +235,16 @@ impl App {
                     self.add_blue_troop_if_legal(TroopType::Rider);
                 },
                 Key::D4 => {
-                    self.add_blue_troop_if_legal(TroopType::Giant);
+                    self.add_blue_troop_if_legal(TroopType::Shieldsman);
                 },
                 Key::D5 => {
                     self.add_blue_troop_if_legal(TroopType::Daggerman);
                 },
                 Key::Q => {
-                    self.add_blue_troop_if_legal(TroopType::Shieldsman);
+                    self.add_blue_troop_if_legal(TroopType::CowardArcher);
                 },
                 Key::W => {
-                    self.add_blue_troop_if_legal(TroopType::CowardArcher);
+                    self.add_blue_troop_if_legal(TroopType::Giant);
                 },
                 Key::A => {
                     self.add_blue_troop_if_legal(TroopType::Wall);
@@ -259,16 +259,16 @@ impl App {
                     self.add_red_troop_if_legal(TroopType::Rider);
                 },
                 Key::D7 => {
-                    self.add_red_troop_if_legal(TroopType::Giant);
+                    self.add_red_troop_if_legal(TroopType::Shieldsman);
                 },
                 Key::D6 => {
                     self.add_red_troop_if_legal(TroopType::Daggerman);
                 },
                 Key::P => {
-                    self.add_red_troop_if_legal(TroopType::Shieldsman);
+                    self.add_red_troop_if_legal(TroopType::CowardArcher);
                 },
                 Key::O => {
-                    self.add_red_troop_if_legal(TroopType::CowardArcher);
+                    self.add_red_troop_if_legal(TroopType::Giant);
                 },
                 Key::Semicolon => {
                     self.add_red_troop_if_legal(TroopType::Wall);
