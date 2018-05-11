@@ -151,6 +151,18 @@ impl BattleField {
                 if let Some(engaged_troop) = engaged_troop {
                     troop.x -= dt * step;
 
+                    let is_movable = engaged_troop.troop_type.is_movable();
+                    let vert_step = if troop.y > engaged_troop.y {
+                        -step.abs()
+                    } else {
+                        step.abs()
+                    };
+
+                    if !is_movable {
+                        troop.x -= dt * 3.0 * step;
+                        troop.y -= dt * vert_step;
+                    }
+
                     if troop.attack_cooldown == 0.0 {
                         troop.attack_cooldown = troop.troop_type.get_cooldown();
 
