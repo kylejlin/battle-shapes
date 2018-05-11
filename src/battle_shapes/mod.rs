@@ -251,7 +251,7 @@ impl App {
                 Key::P => {
                     self.add_red_troop_if_legal(TroopType::Shieldsman);
                 },
-                Key::O => {
+                Key::Semicolon => {
                     self.add_red_troop_if_legal(TroopType::Wall);
                 },
                 _ => {}
