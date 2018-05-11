@@ -158,7 +158,9 @@ impl BattleField {
                         step.abs()
                     };
 
-                    if !is_movable {
+                    if !is_movable
+                    && Self::are_troops_touching(troop, engaged_troop)
+                    {
                         troop.x -= dt * 3.0 * step;
                         troop.y -= dt * vert_step;
                     }
