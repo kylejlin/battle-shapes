@@ -850,6 +850,10 @@ impl BattleField {
             }
         }
 
-        self.troops.retain(|ref t| t.health > 0.0);
+        self.troops.retain(|ref t|
+            t.health > 0.0
+            && t.y >= 0.0
+            && t.y <= 720.0
+        );
     }
 }
