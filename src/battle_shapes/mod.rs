@@ -230,6 +230,9 @@ impl App {
                 Key::Q => {
                     self.add_blue_troop_if_legal(TroopType::Shieldsman);
                 },
+                Key::W => {
+                    self.add_blue_troop_if_legal(TroopType::CowardArcher);
+                },
                 Key::A => {
                     self.add_blue_troop_if_legal(TroopType::Wall);
                 },
@@ -250,6 +253,9 @@ impl App {
                 },
                 Key::P => {
                     self.add_red_troop_if_legal(TroopType::Shieldsman);
+                },
+                Key::O => {
+                    self.add_red_troop_if_legal(TroopType::CowardArcher);
                 },
                 Key::Semicolon => {
                     self.add_red_troop_if_legal(TroopType::Wall);

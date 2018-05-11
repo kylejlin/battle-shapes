@@ -228,6 +228,62 @@ impl BattleField {
                         )
                     )
                 }
+            },
+            TroopType::CowardArcher => {
+                let step = troop.troop_type.get_abs_step() * match troop.team {
+                    Team::Blue => 1.0,
+                    Team::Red => -1.0
+                };
+
+                troop.x += dt * step;
+
+                let enemy_team = troop.team.enemy();
+                let mut engaged_troop: Option<&Troop> = None;
+
+                for other_troop in original_troops {
+                    let dx = other_troop.x - troop.x;
+
+                    if enemy_team == other_troop.team
+                        && Self::are_troops_vertically_touching(troop, other_troop)
+                        && dx.signum() == step.signum()
+                        && dx.abs() < 360.0
+                        && other_troop.troop_type.is_attackable()
+                    {
+                        engaged_troop = Some(other_troop);
+                        break;
+                    }
+                }
+
+                if let Some(engaged_troop) = engaged_troop {
+                    troop.x -= dt * step;
+
+                    let is_movable = engaged_troop.troop_type.is_movable();
+                    let vert_step = if troop.y > engaged_troop.y {
+                        -step.abs()
+                    } else {
+                        step.abs()
+                    };
+
+                    if (engaged_troop.x - troop.x).abs() < 300.0
+                    {
+                        troop.x -= dt * 5.0 * step;
+                    }
+
+                    if troop.attack_cooldown == 0.0 {
+                        troop.attack_cooldown = troop.troop_type.get_cooldown();
+
+                        result.changes.push(
+                            BattleChange::TroopDeployment(
+                                PendingTroopDeployment {
+                                    team: troop.team.clone(),
+                                    troop_type: TroopType::Arrow,
+                                    x: troop.x,
+                                    y: troop.y
+                                }
+                            )
+                        );
+                    }
+                }
             }
         }
 
@@ -407,7 +463,7 @@ impl BattleField {
                     }
                 });
             },
-            TroopType::Archer => {
+            TroopType::Archer | TroopType::CowardArcher => {
                 window.draw_2d(event, |c, g| {
                     rectangle(
                         team_color,
