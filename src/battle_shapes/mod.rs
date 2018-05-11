@@ -55,14 +55,18 @@ fn is_freespawn_mode_on() -> bool {
     || args.contains(&String::from("-f"))
 }
 
-fn rand_int(min_incl: f64, max_excl: f64) -> f64 {
+fn rand_int(min_incl: u8, max_excl: u8) -> u8 {
+    rand::thread_rng().gen_range(min_incl, max_excl)
+}
+
+fn rand_float(min_incl: f64, max_excl: f64) -> f64 {
     rand::thread_rng().gen_range(min_incl, max_excl)
 }
 
 fn rand_position() -> (f64, f64) {
     (
-        rand_int(660.0, 960.0),
-        rand_int(0.0, 720.0)
+        rand_float(660.0, 960.0),
+        rand_float(0.0, 720.0)
     )
 }
 
@@ -367,9 +371,33 @@ impl App {
         if let Some(threat) = threat {
             let threat_size = threat.troop_type.get_size();
             let wall_cost = TroopType::Wall.get_cost();
+            let swordsman_cost = TroopType::Swordsman.get_cost();
             let archer_cost = TroopType::Archer.get_cost();
 
-            if self.red_coins > (2.0 * wall_cost) + archer_cost {
+            if self.red_coins > swordsman_cost + wall_cost && (
+                TroopType::Rider == threat.troop_type
+                || TroopType::Shieldsman == threat.troop_type
+            ) {
+                self.force_add_red_troop(
+                    TroopType::Wall,
+                    threat.x,
+                    threat.y - (threat_size * 0.7)
+                );
+                self.force_add_red_troop(
+                    TroopType::Swordsman,
+                    threat.x,
+                    threat.y + (threat_size * 0.7)
+                );
+            } else if self.red_coins > swordsman_cost && (
+                TroopType::Swordsman == threat.troop_type
+                || TroopType::Archer == threat.troop_type
+            ) {
+                self.force_add_red_troop(
+                    TroopType::Swordsman,
+                    threat.x,
+                    threat.y
+                );
+            } else if self.red_coins > (2.0 * wall_cost) + archer_cost {
                 self.force_add_red_troop(
                     TroopType::Wall,
                     threat.x,
@@ -394,11 +422,39 @@ impl App {
             }
         } else {
             if self.red_coins > 200.0 {
-                self.force_add_red_troop(
-                    TroopType::Swordsman,
-                    position.0,
-                    position.1
-                );
+                match rand_int(0, 11) {
+                    0 ... 4 => {
+                        self.force_add_red_troop(
+                            TroopType::Swordsman,
+                            position.0,
+                            position.1
+                        );
+                    },
+                    5 ... 7 => {
+                        self.force_add_red_troop(
+                            TroopType::Rider,
+                            position.0,
+                            position.1
+                        );
+                    },
+                    8 ... 9 => {
+                        self.force_add_red_troop(
+                            TroopType::Giant,
+                            position.0,
+                            position.1
+                        );
+                    },
+                    10 => {
+                        self.force_add_red_troop(
+                            TroopType::Shieldsman,
+                            position.0,
+                            position.1
+                        );
+                    },
+                    _ => {
+                        // Unreachable, but required by compiler
+                    }
+                }
             }
         }
     }

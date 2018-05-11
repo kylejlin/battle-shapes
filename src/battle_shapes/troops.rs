@@ -24,7 +24,7 @@ pub enum Team {
     Red
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub enum TroopType {
     Swordsman,
     Wall,
