@@ -342,7 +342,27 @@ impl App {
         }
 
         if let Some(threat) = threat {
-            if self.red_coins > TroopType::Wall.get_cost() {
+            let threat_size = threat.troop_type.get_size();
+            let wall_cost = TroopType::Wall.get_cost();
+            let archer_cost = TroopType::Archer.get_cost();
+
+            if self.red_coins > (2.0 * wall_cost) + archer_cost {
+                self.force_add_red_troop(
+                    TroopType::Wall,
+                    threat.x,
+                    threat.y + (threat_size * 0.7)
+                );
+                self.force_add_red_troop(
+                    TroopType::Wall,
+                    threat.x,
+                    threat.y - (threat_size * 0.7)
+                );
+                self.force_add_red_troop(
+                    TroopType::Archer,
+                    threat.x + 100.0,
+                    threat.y
+                );
+            } else if self.red_coins > wall_cost {
                 self.force_add_red_troop(
                     TroopType::Wall,
                     threat.x,
