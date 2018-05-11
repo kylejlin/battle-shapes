@@ -350,13 +350,13 @@ impl App {
                 );
             }
         } else {
-            /*if self.red_coins > 30.0 {
+            if self.red_coins > 200.0 {
                 self.force_add_red_troop(
                     TroopType::Swordsman,
                     position.0,
                     position.1
                 );
-            }*/
+            }
         }
     }
 }
