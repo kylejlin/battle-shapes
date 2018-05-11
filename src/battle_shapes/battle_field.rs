@@ -454,6 +454,10 @@ impl BattleField {
                         &Team::Blue => -3.0,
                         &Team::Red => 0.5
                     };
+                    let tip_offset_multiplier = match &troop.team {
+                        &Team::Blue => 0.5,
+                        &Team::Red => -1.0
+                    };
 
                     rectangle(
                         WOOD,
@@ -481,7 +485,7 @@ impl BattleField {
                     rectangle(
                         FLINT,
                         [
-                            troop.x + (troop_size * 0.5),
+                            troop.x + (troop_size * tip_offset_multiplier),
                             troop.y - (troop_size * 0.25),
                             troop_size * 0.5,
                             troop_size * 0.5
